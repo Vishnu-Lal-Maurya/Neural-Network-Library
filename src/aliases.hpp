@@ -1,6 +1,6 @@
 #ifndef ALIASES_H
 #define ALIASES_H
-
+#include <iostream>
 #include <vector>
 
 namespace NN{

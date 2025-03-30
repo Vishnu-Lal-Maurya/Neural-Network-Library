@@ -9,7 +9,7 @@ namespace NN {
    class Tanh final: public ActivationFunction
    {
       public:
-      row activate(row& input) override final {
+      row activate(const row& input) override {
          row result(input);
          for(auto &ele : result){
             ele = ( exp(ele) - exp(-ele) ) / ( exp(ele) + exp(-ele) );
@@ -17,7 +17,7 @@ namespace NN {
          return result;
       };
 
-      row derivate(row& input) override final {
+      row derivate(const row& input) override {
          row result(input);
          for(auto &ele : result){
             ele = 1 - ele*ele;

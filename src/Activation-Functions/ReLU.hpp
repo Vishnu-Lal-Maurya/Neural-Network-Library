@@ -26,7 +26,7 @@ namespace NN
             row result(length);
 
             for(int i{0}; i<length; ++i){
-                result[i] = (input[i] >= 0);
+                result[i] = (input[i] > 0);
             }
 
             return result;

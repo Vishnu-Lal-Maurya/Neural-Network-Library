@@ -14,22 +14,52 @@ class MyMatrix
 public:
 
    MyMatrix()=default;
-   
-   explicit MyMatrix(int x, int y)
-   : m_x{x}, m_y{y}, m_matrix{std::vector<std::vector<T>>{static_cast<std::size_t>(x),std::vector<T>{static_cast<std::size_t>(x)}};
+
+   // checker in constructor for x>0 and y>0
+
+   explicit MyMatrix(int cols)
+   : MyMatrix(1,cols);
    {
    }
    
-   explicit MyMatrix(std::initializer<T>)
+   explicit MyMatrix(int rows, int cols)
+   : m_rows{rows}, m_cols{cols}, m_matrix{std::vector<std::vector<T>>{static_cast<std::size_t>(m_rows),std::vector<T>{static_cast<std::size_t>(m_cols)}}
+   {
+   }
    
+   explicit MyMatrix(std::initializer_list<T> list)
+   : MyMatrix(1,static_cast<int>(list.size()))
+   {
+      std::copy(list.begin(),list.end(),m_matrix[0]);
+   }
+   
+   explicit MyMatrix(std::initializer_list<std::initializer_list<T>> list)
+   : m_x{static_cast<int>(list.size())}, m_y{static_cast<int>(list[0].size())}
+   {
+      std::copy(list.begin(),list.end(),m_matrix);
+   }
+
+   MyMatrix(MyMatrix& other) = default;
+
+   MyMatrix& operator=(MyMatrix& other) = default;
+
+
+
+
+
+
+
+   int getRows(){return m_x;}
+
+   int getCols(){return m_y;}
    
    
    
 
 private:
    
-   int m_x{};
-   int m_y{};
+   int m_rows{};
+   int m_cols{};
    std::vector<std::vector<T>> m_matrix{};
    
    

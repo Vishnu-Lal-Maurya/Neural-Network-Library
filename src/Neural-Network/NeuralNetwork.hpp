@@ -7,16 +7,22 @@
 #include "../Activation-Functions/ActivationFunction.hpp"
 #include "../Loss-Functions/LossFunction.hpp"
 
-class NeuralNetwork{
-public:
-   NeuralNetwork() = default;
-   void addLayer(int numberOfNodes, NN::ActivationFunction& activationFunction){
+namespace NN{
+
+   class NeuralNetwork{
+
+   public:
+      NeuralNetwork() = default;
       
-   }  
-   
-private: 
-   std::vector<NN::Layer> m_layers{};
-   NN::LossFunction& m_lossFunction;
+      void addLayer(int numberOfNodes, NN::ActivationFunction& activationFunction){
+
+      }  
+      
+   private:
+
+      std::vector<NN::Layer> m_layers{};
+
+   };
 
 };
 

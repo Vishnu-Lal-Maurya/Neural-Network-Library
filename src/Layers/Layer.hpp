@@ -11,9 +11,7 @@ namespace NN
     {
     public:
 
-        Layer() = default;
-
-        Layer(int inputSize, int outputSize, ActivationFunction& activationFunction)
+        Layer(int inputSize, int outputSize,const ActivationFunction& activationFunction)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }
@@ -33,7 +31,7 @@ namespace NN
             }
             
             // Activate the output
-            result = m_activationFunction.activate(result);
+            // result = m_activationFunction.activate(result);
 
             return std::move_if_noexcept(result);
         }
@@ -45,7 +43,7 @@ namespace NN
         matrix m_weights{};
         row m_input{};
         row m_bias{};
-        ActivationFunction& m_activationFunction;
+        const ActivationFunction& m_activationFunction;
     };
 
 };

@@ -2,17 +2,36 @@
 #define RELU_H
 
 #include "ActivationFunction.hpp"
+#include <algorithm>
 
-namespace NN{
-    class ReLU final: public ActivationFunction
-    {
+namespace NN
+{
+    class ReLU final : public ActivationFunction{
     public:
-        NN::row activate(NN::row& input){
-            // int length = input.size();
-            // NN::row result(length, 0);
+        row activate(row &input) override {
+
+            int length{ static_cast<int> (input.size()) };
+            row result(length);
+
+            for(int i{0}; i<length; ++i){
+                result[i] = std::max(input[i], 0.0);
+            }
+
+            return result;
         };
+
+        row derivate(row &input) override {
+
+            int length { static_cast<int> (input.size()) };
+            row result(length);
+
+            for(int i{0}; i<length; ++i){
+                result[i] = (input[i] >= 0);
+            }
+
+            return result;
+        }
     };
 };
-
 
 #endif

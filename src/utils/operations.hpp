@@ -165,7 +165,7 @@ namespace NN{
         return elementWiseMatrixOperations(v1,v2,'-');
     }
 
-    matrix operator-(const matrix& v1, const matrix& v2){
+    matrix operator*(const matrix& v1, const matrix& v2){
         return elementWiseMatrixOperations(v1,v2,'*');
     }
 

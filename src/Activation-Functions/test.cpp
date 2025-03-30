@@ -19,10 +19,6 @@ int main(){
     }
     std::cout << '\n';
 
-<<<<<<< HEAD
-    NN::row derivatives{ sigmoid.derivate(input) };
-    for(auto x: derivatives){
-=======
     std::cout << "activation output = ";
     for(auto x: activationOutput){
         std::cout << x << ' ';
@@ -30,14 +26,8 @@ int main(){
     std::cout << '\n';
     std::cout << "derivate output = ";
     for(auto x: derivativeOutput){
->>>>>>> 0a6d9fa2193e5562f2db098c4bc64705cba0ad47
         std::cout << x << ' ';
     }
     std::cout << '\n';
 
-<<<<<<< HEAD
-    // using NN::operator<<;
-    std::cout << derivatives << '\n';
-=======
->>>>>>> 0a6d9fa2193e5562f2db098c4bc64705cba0ad47
 }

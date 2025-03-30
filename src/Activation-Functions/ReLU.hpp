@@ -8,7 +8,7 @@ namespace NN
 {
     class ReLU final : public ActivationFunction{
     public:
-        row activate(row &input) override {
+        row activate(const row &input) override {
 
             int length{ static_cast<int> (input.size()) };
             row result(length);
@@ -20,7 +20,7 @@ namespace NN
             return result;
         };
 
-        row derivate(row &input) override {
+        row derivate(const row &input) override {
 
             int length { static_cast<int> (input.size()) };
             row result(length);

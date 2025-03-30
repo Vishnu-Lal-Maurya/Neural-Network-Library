@@ -127,7 +127,17 @@ namespace NN{
     }
 
     matrix matMul(const matrix& v1, const matrix& v2){
-        // matrix result{};
+        assert(v1[0].size() == v2.size());
+        matrix result(v1.size(), row(v2[0].size(),0));
+        for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
+            for(int i{0}; i < static_cast<int>(v1.size()); ++i){
+                double temp{v1[i][k]};
+                for(int j{0}; j < static_cast<int>(v2[0].size()); ++j){
+                    result[i][j] += temp * v2[k][j];
+                }
+            }
+        }
+        return result;
     }
 }
 

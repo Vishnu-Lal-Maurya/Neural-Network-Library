@@ -2,17 +2,24 @@
 #include "CategoricalCrossEntropy.hpp"
 #include <iostream>
 #include "../aliases.hpp"
+#include "../utils/operations.hpp"
 
 int main(){
      
-    NN:: CategoricalCrossEntropy temp;
-    // NN:: row v;
-    
+    NN:: matrix v1{{1,2},{2,3},{3,4}};
+    NN:: matrix v2{{1,2},{2,3}};
+    NN:: matrix result{NN::matMul(v1, v2)};
+    for(int i{0}; i < result.size(); ++i){
+        for(int j{0}; j < result[0].size(); ++j){
+            std::cout << result[i][j] << ' ';
+        }
+        std::cout << std::endl;
+        
+    }
 
-    NN::row input{0,1,0};
-    NN:: row output{0.1,0.8,0.1};
-    std::cout << temp.computeCost(input, output) << std::endl;
-    
+
+
+
 
 
 }

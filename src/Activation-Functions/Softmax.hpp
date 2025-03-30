@@ -22,9 +22,9 @@ namespace NN{
         };
 
         row derivate(const row& input) override{
-            row result{};
-            for(auto i : input){
-                result.push_back(exp(i) * (1-exp(i)));
+            row result{activate(input)};
+            for(auto &i : result){
+                i *= (1 - i);
             }
             return result;
         }

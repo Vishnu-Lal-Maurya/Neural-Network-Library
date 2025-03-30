@@ -7,7 +7,7 @@
 namespace NN{
     class Sigmoid final: public ActivationFunction{
     public:
-        row activate(const row& input) override{
+        row activate(const row& input) const override{
             int length { static_cast<int>(input.size()) };
             row result(length);
 
@@ -18,7 +18,7 @@ namespace NN{
             return std::move(result);
         }
 
-        row derivate(const row& input) override{
+        row derivate(const row& input) const override{
             int length { static_cast<int>(input.size()) };
             row result(length);
 
@@ -30,7 +30,7 @@ namespace NN{
         }
 
     private:
-        double eval(double x){
+        double eval(double x) const {
             return 1.0/(1.0 + exp(-x));
         }
     };

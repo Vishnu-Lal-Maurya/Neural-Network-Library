@@ -8,7 +8,7 @@ namespace NN{
     class Softmax final: public ActivationFunction
     {
     public:
-        row activate(const row& input) override {
+        row activate(const row& input) const override {
             row result{};
             double denominator{};
             for(auto i : input){
@@ -21,7 +21,7 @@ namespace NN{
             return result;
         };
 
-        row derivate(const row& input) override{
+        row derivate(const row& input) const override{
             row result{activate(input)};
             for(auto &i : result){
                 i *= (1 - i);

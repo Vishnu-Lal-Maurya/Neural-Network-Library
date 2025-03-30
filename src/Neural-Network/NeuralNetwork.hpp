@@ -11,7 +11,7 @@ class NeuralNetwork{
 public:
    NeuralNetwork() = default;
    void addLayer(int numberOfNodes, NN::ActivationFunction& activationFunction){
-
+      
    }  
    
 private: 

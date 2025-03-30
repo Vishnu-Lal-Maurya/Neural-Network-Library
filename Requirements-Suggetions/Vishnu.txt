@@ -1,0 +1,7 @@
+// M.transpose() // 
+// [][]  -> will return element
+// []    -> will return row
+// M1*M2 -> multiplication
+// M1.M2 -> dot product
+// MyMatrix.randn(rows,cols)
+// MyMatrix.randn(cols)

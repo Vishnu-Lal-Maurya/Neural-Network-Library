@@ -13,7 +13,7 @@ namespace NN
             int length{ static_cast<int> (input.size()) };
             row result(length);
 
-            for(int i { 0 }; i < length; ++i){
+            for(int i{0}; i<length; ++i){
                 result[i] = std::max(input[i], 0.0);
             }
 
@@ -25,7 +25,7 @@ namespace NN
             int length { static_cast<int> (input.size()) };
             row result(length);
 
-            for(int i { 0 }; i < length; ++i){
+            for(int i{0}; i<length; ++i){
                 result[i] = (input[i] >= 0);
             }
 

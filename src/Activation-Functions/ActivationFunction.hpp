@@ -7,8 +7,8 @@ namespace NN{
     class ActivationFunction
     {
     public:
-        virtual row activate(row& input) = 0;
-        virtual row derivate(row& input) = 0;
+        virtual row activate(const row& input) = 0;
+        virtual row derivate(const row& input) = 0;
     };
 }
 

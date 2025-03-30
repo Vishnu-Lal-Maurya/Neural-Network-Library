@@ -10,6 +10,9 @@ namespace NN
     class Layer
     {
     public:
+
+        Layer() = default;
+
         Layer(int inputSize, int outputSize, ActivationFunction& activationFunction)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }

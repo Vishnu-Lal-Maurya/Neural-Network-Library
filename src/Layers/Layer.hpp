@@ -31,10 +31,14 @@ namespace NN
             }
             
             // Activate the output
-            // result = m_activationFunction.activate(result);
+            result = m_activationFunction.activate(result);
 
             return std::move_if_noexcept(result);
         }
+
+        int getOutputSize() const { return m_outputSize; }
+
+        int getInputSize() const { return m_inputSize; }
 
     private:
         int m_outputSize{};

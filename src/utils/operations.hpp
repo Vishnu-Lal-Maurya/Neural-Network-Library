@@ -118,7 +118,7 @@ namespace NN{
         matrix result{};
         for(int j{0}; j < static_cast<int>(v[0].size()); ++j){
             row temp{};
-            for(int i{0}; i < static_cast<int>(v[0].size()); ++j){
+            for(int i{0}; i < static_cast<int>(v.size()); ++i){
                 temp.push_back(v[i][j]);
             }
             result.push_back(temp);

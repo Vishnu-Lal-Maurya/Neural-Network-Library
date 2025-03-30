@@ -12,15 +12,36 @@ namespace NN{
    class NeuralNetwork{
 
    public:
-      NeuralNetwork() = default;
-      
-      void addLayer(int numberOfNodes, NN::ActivationFunction& activationFunction){
+      NeuralNetwork(int inputDim)
+      : m_inputDim{inputDim}
+      {
 
+      }
+      
+      void addLayer(int currNumOfNodes, NN::ActivationFunction& activationFunction){
+         int prevNumOfNodes{m_inputDim};
+         if(m_layers.size()){
+            prevNumOfNodes = m_layers.back().getOutputSize();
+         }
+         m_layers.push_back(NN::Layer{currNumOfNodes,prevNumOfNodes,activationFunction});
       }  
+
+
       
    private:
 
       std::vector<NN::Layer> m_layers{};
+      int m_inputDim{};
+
+      void forward(row input){
+
+         for(auto layer : m_layers){
+            input = layer.forwardPropagate(input);
+         }
+
+      }
+
+
 
    };
 

@@ -24,7 +24,8 @@ public:
    }
    
    explicit MyMatrix(int rows, int cols)
-   : m_rows{rows}, m_cols{cols}, m_matrix{std::vector<std::vector<T>>{static_cast<std::size_t>(m_rows),std::vector<T>{static_cast<std::size_t>(m_cols)}}}
+   : m_rows{rows}, m_cols{cols},
+   m_matrix{std::vector<std::vector<T>>(m_rows,std::vector<T>(m_cols))}
    {
    }
    

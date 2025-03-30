@@ -98,6 +98,15 @@ namespace NN{
         return elementWiseRowOperations(v1,v2,'/');
     }
 
+    double dot(const row& v1, const row& v2){
+        double result{0};
+        row temp { elementWiseRowOperations(v1, v2, '*') };
+        for(auto x: temp){
+            result += x;
+        }
+        return result;
+    }
+
     matrix add(const matrix& v1, const matrix& v2){
         return elementWiseMatrixOperations(v1,v2,'+');
     }

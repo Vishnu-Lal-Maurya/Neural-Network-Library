@@ -44,7 +44,21 @@ public:
 
    MyMatrix& operator=(MyMatrix& other) = default;
 
-   MyMatrix&
+   std::ostream& operator<<(std::ostream& out, const MyMatrix& matrix){
+      out << "[ ";
+      for(auto &row: m_matrix){
+         out << "[ ";
+         for(auto &cols:row){
+            out << cols << ", ";
+         }
+         out << "]";
+      }
+      out << " ]";
+      return out;
+   }
+
+   
+
    
 
 

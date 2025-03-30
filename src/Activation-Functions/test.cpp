@@ -1,5 +1,6 @@
 #include "ReLU.hpp"
 #include "Sigmoid.hpp"
+#include "Softmax.hpp"
 #include <iostream>
 
 int main(){

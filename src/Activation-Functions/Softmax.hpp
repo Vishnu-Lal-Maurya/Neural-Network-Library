@@ -9,24 +9,24 @@ namespace NN{
     {
     public:
         row activate(row& input) override {
-            row output{};
+            row result{};
             double denominator{};
             for(auto i : input){
                 denominator += exp(i);
             }
             
             for(auto i : input){
-                output.push_back(exp(i) / denominator);
+                result.push_back(exp(i) / denominator);
             }
-            return output;
+            return result;
         };
 
         row derivate(row& input) override{
-            row output{};
+            row result{};
             for(auto i : input){
-                output.push_back(exp(i) * (1-exp(i)));
+                result.push_back(exp(i) * (1-exp(i)));
             }
-            return output;
+            return result;
         }
     };
 };

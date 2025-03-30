@@ -11,7 +11,7 @@ namespace NN
     {
     public:
 
-        Layer(int inputSize, int outputSize,const ActivationFunction& activationFunction)
+        Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }
@@ -27,7 +27,7 @@ namespace NN
 
             for(int i{0}; i<m_outputSize; ++i){
                 std::size_t idx { toUZ(i) };
-                result[i] = dot(input, m_weights[idx]) + m_bias[idx];
+                result[idx] = dot(input, m_weights[idx]) + m_bias[idx];
             }
             
             // Activate the output

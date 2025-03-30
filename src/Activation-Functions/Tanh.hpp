@@ -8,7 +8,7 @@ namespace NN {
 
    class Tanh final: public ActivationFunction
    {
-      public:
+   public:
       row activate(const row& input) const override {
          row result(input);
          for(auto &ele : result){

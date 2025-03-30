@@ -9,27 +9,19 @@ namespace NN
     class ReLU final : public ActivationFunction{
     public:
         row activate(const row &input) const override {
-
-            int length{ static_cast<int> (input.size()) };
-            row result(length);
-
-            for(int i{0}; i<length; ++i){
-                result[i] = std::max(input[i], 0.0);
+            row result { input };
+            for(auto &ele: result){
+                ele = std::max(ele,0.0);
             }
-
-            return result;
+            return std::move_if_noexcept(result);
         };
 
         row derivate(const row &input) const override {
-
-            int length { static_cast<int> (input.size()) };
-            row result(length);
-
-            for(int i{0}; i<length; ++i){
-                result[i] = (input[i] > 0);
+            row result{ input };
+            for(auto& ele: result){
+                ele = ((ele>0.0)? 1.0:0.0);
             }
-
-            return result;
+            return std::move_if_noexcept(result);
         }
     };
 };

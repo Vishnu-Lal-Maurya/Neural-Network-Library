@@ -8,25 +8,23 @@ namespace NN{
     class Sigmoid final: public ActivationFunction{
     public:
         row activate(const row& input) const override{
-            int length { static_cast<int>(input.size()) };
-            row result(length);
+            row result { input };
 
-            for(int i{0}; i<length; ++i){
-                result[i] = eval(input[i]);
+            for(auto& ele: result){
+                ele = eval(ele);
             }
 
-            return std::move(result);
+            return std::move_if_noexcept(result);
         }
 
         row derivate(const row& input) const override{
-            int length { static_cast<int>(input.size()) };
-            row result(length);
+            row result(input);
 
-            for(int i{0}; i<length; ++i){
-                result[i] = (eval(input[i]) * (1.0 - eval(input[i])));
+            for(auto& ele: result){
+                ele = (eval(ele) * (1.0 - eval(ele)));
             }
 
-            return std::move(result);
+            return std::move_if_noexcept(result);
         }
 
     private:

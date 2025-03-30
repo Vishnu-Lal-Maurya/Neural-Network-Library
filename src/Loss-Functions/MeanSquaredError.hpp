@@ -8,7 +8,7 @@ namespace NN{
 
     class MeanSquaredError final: public LossFunction{
     public:
-        double computeCost(const row& yActual, const row& yPredicted) override {
+        double computeCost(const row& yActual, const row& yPredicted) const override {
 
             double result {0.0};
             int length { static_cast<int>(yActual.size()) };
@@ -22,7 +22,7 @@ namespace NN{
             return result;
         }
 
-        row derivative(const row& yActual, const row& yPredicted) override {
+        row derivative(const row& yActual, const row& yPredicted) const override {
 
             int length { static_cast<int>(yActual.size()) };
             row result(length);

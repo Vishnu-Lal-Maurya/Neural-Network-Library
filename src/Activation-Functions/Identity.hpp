@@ -9,27 +9,13 @@ namespace NN
     class Identity final : public ActivationFunction{
     public:
         row activate(const row &input) const override {
-
-            std::size_t length{ input.size() };
-            row result(length);
-
-            for(int i{0}; i<length; ++i){
-                result[toUZ(i)] = input[toUZ(i)];
-            }
-
-            return result;
+            return std::move_if_noexcept(input);
         };
 
         row derivate(const row &input) const override {
-
             int length { input.size() };
-            row result(length);
-
-            for(int i{0}; i<length; ++i){
-                result[toUZ(i)] = 1.0;
-            }
-
-            return result;
+            row result(length,1.0);
+            return std::move_if_noexcept(result);
         }
     };
 };

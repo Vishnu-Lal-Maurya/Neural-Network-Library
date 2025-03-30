@@ -7,8 +7,8 @@ namespace NN{
    class LossFunction
    {
    public:
-       virtual double computeCost(const row& yActual, const row& yPredicted) = 0;
-       virtual row derivative(const row& yActual, const row& yPredicted) = 0;
+       virtual double computeCost(const row& yActual, const row& yPredicted) const = 0;
+       virtual row derivative(const row& yActual, const row& yPredicted) const = 0;
    };
 }
 

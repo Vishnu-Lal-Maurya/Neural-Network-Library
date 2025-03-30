@@ -18,12 +18,12 @@ namespace NN{
 
       }
       
-      void addLayer(int currNumOfNodes, NN::ActivationFunction& activationFunction){
+      void addLayer(int currNumOfNodes, const NN::ActivationFunction& activationFunction){
          int prevNumOfNodes{m_inputDim};
          if(m_layers.size()){
             prevNumOfNodes = m_layers.back().getOutputSize();
          }
-         m_layers.push_back(NN::Layer{currNumOfNodes,prevNumOfNodes,activationFunction});
+         m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction});
       }  
 
 

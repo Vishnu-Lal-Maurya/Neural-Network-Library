@@ -9,16 +9,18 @@ namespace NN{
     {
     public:
         row activate(const row& input) const override {
+            std::size_t length { input.size() };
             row result{};
+            result.reserve(length);
             double denominator{};
             for(auto i : input){
                 denominator += exp(i);
             }
             
             for(auto i : input){
-                result.push_back(exp(i) / denominator);
+                result.emplace_back(exp(i) / denominator);
             }
-            return result;
+            return std::move_if_noexcept(result);
         };
 
         row derivate(const row& input) const override{
@@ -26,7 +28,7 @@ namespace NN{
             for(auto &i : result){
                 i *= (1 - i);
             }
-            return result;
+            return std::move_if_noexcept(result);
         }
     };
 };

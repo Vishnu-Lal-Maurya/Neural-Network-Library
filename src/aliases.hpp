@@ -16,6 +16,10 @@ namespace NN{
         }
         return out << ']';
     }
+
+    std::size_t toUZ(int x){
+        return static_cast<std::size_t>(x);
+    }
 };
 
 #endif

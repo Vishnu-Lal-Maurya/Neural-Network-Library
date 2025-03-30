@@ -1,4 +1,5 @@
 src\Activation-Functions\test.cpp
+src\Loss-Functions\test.cpp
 utils\test.cpp
 rough.txt
 .vscode

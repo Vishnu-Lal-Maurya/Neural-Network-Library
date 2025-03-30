@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <initializer_list>
+#include <iostream>
 
 
 
@@ -23,7 +24,7 @@ public:
    }
    
    explicit MyMatrix(int rows, int cols)
-   : m_rows{rows}, m_cols{cols}, m_matrix{std::vector<std::vector<T>>{static_cast<std::size_t>(m_rows),std::vector<T>{static_cast<std::size_t>(m_cols)}}
+   : m_rows{rows}, m_cols{cols}, m_matrix{std::vector<std::vector<T>>{static_cast<std::size_t>(m_rows),std::vector<T>{static_cast<std::size_t>(m_cols)}}}
    {
    }
    
@@ -43,15 +44,14 @@ public:
 
    MyMatrix& operator=(MyMatrix& other) = default;
 
-
-
-
-
+   MyMatrix&
+   
 
 
    int getRows(){return m_x;}
 
    int getCols(){return m_y;}
+
    
    
    

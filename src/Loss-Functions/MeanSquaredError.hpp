@@ -31,7 +31,6 @@ namespace NN{
                 std::size_t x { static_cast<std::size_t>(i) };
                 result[x] = (yPredicted[x] - yActual[x]) / length;
             }
-
             return result;
         }
     };

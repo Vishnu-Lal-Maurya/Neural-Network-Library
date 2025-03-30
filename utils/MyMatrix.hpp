@@ -19,7 +19,7 @@ public:
    // checker in constructor for x>0 and y>0
 
    explicit MyMatrix(int cols)
-   : MyMatrix(1,cols);
+   : MyMatrix(1,cols)
    {
    }
    
@@ -35,7 +35,7 @@ public:
    }
    
    explicit MyMatrix(std::initializer_list<std::initializer_list<T>> list)
-   : m_x{static_cast<int>(list.size())}, m_y{static_cast<int>(list[0].size())}
+   : m_rows{static_cast<int>(list.size())}, m_cols{static_cast<int>(list[0].size())}
    {
       std::copy(list.begin(),list.end(),m_matrix);
    }
@@ -44,9 +44,9 @@ public:
 
    MyMatrix& operator=(MyMatrix& other) = default;
 
-   std::ostream& operator<<(std::ostream& out, const MyMatrix& matrix){
+   friend std::ostream& operator<<(std::ostream& out, const MyMatrix& matrix){
       out << "[ ";
-      for(auto &row: m_matrix){
+      for(auto &row: matrix.m_matrix){
          out << "[ ";
          for(auto &cols:row){
             out << cols << ", ";
@@ -62,9 +62,9 @@ public:
    
 
 
-   int getRows(){return m_x;}
+   int getRows(){return m_rows;}
 
-   int getCols(){return m_y;}
+   int getCols(){return m_cols;}
 
    
    

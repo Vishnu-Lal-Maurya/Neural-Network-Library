@@ -4,3 +4,4 @@ utils\test.cpp
 
 *.exe
 *.out
+*.cph

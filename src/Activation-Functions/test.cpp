@@ -10,4 +10,13 @@ int main(){
         std::cout << x << ' ';
     }
     std::cout << '\n';
+
+    NN::row derivatives{ sigmoid.derivate(input) };
+    for(auto x: derivatives){
+        std::cout << x << ' ';
+    }
+    std::cout << '\n';
+
+    // using NN::operator<<;
+    std::cout << derivatives << '\n';
 }

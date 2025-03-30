@@ -33,4 +33,4 @@ namespace NN {
 }
 
 
-#endif TANH_H
+#endif

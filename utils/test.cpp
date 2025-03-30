@@ -2,7 +2,7 @@
 #include "MyMatrix.hpp"
 
 int main(){
-    MyMatrix matrix{{1,2,3},{4,5,6}};
+    MyMatrix<int> matrix(4,5);
     
     return 0;
 }

@@ -35,7 +35,7 @@ public:
    }
    
    explicit MyMatrix(std::initializer_list<std::initializer_list<T>> list)
-   : m_rows{static_cast<int>(list.size())}, m_cols{static_cast<int>(list[0].size())}
+   : m_rows{static_cast<int>(list.size())}, m_cols{static_cast<int>(list.begin().size())}
    {
       std::copy(list.begin(),list.end(),m_matrix);
    }

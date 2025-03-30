@@ -7,8 +7,8 @@ namespace NN{
     class ActivationFunction
     {
     public:
-        virtual NN::row activate(NN::row& input) = 0;
-        virtual NN::row derivate(NN::row& input) = 0;
+        virtual row activate(row& input) = 0;
+        virtual row derivate(row& input) = 0;
     };
 }
 

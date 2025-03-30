@@ -1,0 +1,26 @@
+Simple-Datasets
+    -> ...
+
+src
+    -> Activation-Functions
+        -> ...
+
+    -> Loss-Functions
+        -> ...
+
+    -> Prediction-Evaluations
+        -> ...
+
+    -> main.cpp
+        -> NNL
+            -> Layers
+                -> /* Nodes */
+                -> weight matrix and bias vector
+                -> Activation-Function
+            
+            -> Forward-Propagation
+            -> Backward-Propagation
+            
+            -> Loss-Function
+
+

@@ -29,7 +29,7 @@ namespace NN{
         std::size_t length{ v1.size() };
         row result(length);
 
-        for(int i = 0; i < length; ++i){
+        for(int i{0}; i < length; ++i){
             switch (op)
             {
             case '+':
@@ -56,8 +56,8 @@ namespace NN{
         std::size_t numCols{ v1[0].size() };
 
         matrix result(numRows, row(numCols));
-        for(int i = 0; i < numRows; ++i){
-            for(int j = 0; j < numCols; ++j){
+        for(int i{0}; i < numRows; ++i){
+            for(int j{0}; j < numCols; ++j){
                 int val{};
                 switch (op)
                 {
@@ -112,6 +112,22 @@ namespace NN{
 
     matrix div(const matrix& v1, const matrix& v2){
         return elementWiseMatrixOperations(v1,v2,'/');
+    }
+
+    matrix transpose(const matrix& v){
+        matrix result{};
+        for(int j{0}; j < static_cast<int>(v[0].size()); ++j){
+            row temp{};
+            for(int i{0}; i < static_cast<int>(v[0].size()); ++j){
+                temp.push_back(v[i][j]);
+            }
+            result.push_back(temp);
+        }
+        return result;
+    }
+
+    matrix matMul(const matrix& v1, const matrix& v2){
+        // matrix result{};
     }
 }
 

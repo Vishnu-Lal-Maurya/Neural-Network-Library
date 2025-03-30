@@ -6,7 +6,7 @@
 
 namespace NN {
 
-   class Tanh: public ActivationFunction
+   class Tanh final: public ActivationFunction
    {
       public:
       row activate(row& input) override final {
@@ -32,4 +32,4 @@ namespace NN {
 }
 
 
-#endif TAN_H
+#endif TANH_H

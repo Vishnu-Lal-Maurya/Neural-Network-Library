@@ -11,10 +11,11 @@ namespace NN{
         double computeCost(const row& yActual, const row& yPredicted) override {
 
             double result {0.0};
-            int length = yActual.size();
+            int length = static_cast<int>(yActual.size());
 
-            for(int i{0}, i<length; ++i){
-                result += (yActual[i] - yPredicted[i]) * (yActual[i] - yPredicted[i]);
+            for(int i{0}; i<length; ++i){
+                std::size_t x { static_cast<std::size_t>(i) };
+                result += (yActual[x] - yPredicted[x]) * (yActual[x] - yPredicted[x]);
             }
             result /= length;
             

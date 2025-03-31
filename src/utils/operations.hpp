@@ -245,21 +245,21 @@ namespace NN{
     }
 
     matrix randMatrix(int rows, int cols){
-        matrix output(rows,row(cols));
+        matrix result(rows,row(cols));
         for(int i{0}; i < rows; ++i){
             for(int j{0}; j < cols; ++j){
-                output[i][j] = randInRange(-1.0,1.0);
+                result[i][j] = randInRange(-1.0,1.0);
             }
         }
-        return std::move_if_noexcept(output);
+        return std::move_if_noexcept(result);
     }
 
     row randRow(int cols){
-        row output(cols);
-        for(auto& i : output){
+        row result(cols);
+        for(auto& i : result){
             i = randInRange(-1.0,1.0);
         }
-        return std::move_if_noexcept(output);
+        return std::move_if_noexcept(result);
     }
 }
 

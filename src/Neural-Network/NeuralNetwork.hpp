@@ -1,7 +1,7 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
-#include "../aliases.h"
+#include "../aliases.hpp"
 #include "../utils/operations.hpp"
 #include "../Layers/Layer.hpp"
 #include "../Activation-Functions/ActivationFunction.hpp"
@@ -15,7 +15,6 @@ namespace NN{
       NeuralNetwork(int inputDim)
       : m_inputDim{inputDim}
       {
-
       }
       
       void addLayer(int currNumOfNodes, const NN::ActivationFunction& activationFunction){
@@ -26,16 +25,37 @@ namespace NN{
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction});
       }  
 
+<<<<<<< HEAD
    private:
+=======
+      void train(int epochs,row& input){
+         while(epochs--){
+            row output { forward(input) };
+            for(auto ele: output){
+               std::cout << ele << ' ';
+            }
+            std::cout << '\n';
+            backward();
+         }
+      }
+      
+      private:
+      
+>>>>>>> fbd557eb2c91b4b9be758610691ab4388c2ebe29
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
-
-      void forward(row input){
-
-         for(auto layer : m_layers){
+      
+      row forward(row input){
+   
+         for(auto& layer : m_layers){
             input = layer.forwardPropagate(input);
          }
 
+         return std::move_if_noexcept(input);
+      }
+
+      void backward(){
+         
       }
 
    };

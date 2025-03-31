@@ -78,12 +78,8 @@ namespace NN{
       void backward(const row& dLoss, double learningRate){
          row prev{ dLoss };
          using namespace NN;
-         // std::cout << "dActivated: ";
-         // std::cout << prev << '\n';
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
-            // std::cout << "I'm in the loop: \n";
             prev = it->backwardPropogate(prev, learningRate);
-            // std::cout << prev << '\n';
          }
       }
    };

@@ -43,10 +43,6 @@ namespace NN
         }
 
         row backwardPropogate(const row& dActivatedCurr, double learningRate){
-            using namespace NN;
-            // std::cout << "Start wala print ==> \n";
-            // std::cout << dActivatedCurr << '\n';
-            // std::cout << m_computed << '\n';
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
             matrix dweights = NN::matMul(dcomputed,m_input); 
@@ -54,24 +50,8 @@ namespace NN
             
             
             row dActivatedPrev = NN::matToRow(NN::matMul(NN::transpose(m_weights),NN::rowToColMatrix(dcomputed)));
-            // std::cout << "Weights for the layer before update:\n";
-            // for(auto r: m_weights){
-            //     std::cout << r << '\n';
-            // }
-            // std::cout << "Biases for the layer before update:\n";
-            // std::cout << m_bias << '\n';
             m_weights = NN::sub(m_weights, NN::mul(learningRate,dweights));
             m_bias = NN::sub(m_bias, NN::mul(learningRate,dbias));
-            // std::cout << "dWeight for the layer:\n";
-            // for(auto r: dweights){
-            //     std::cout << r << '\n';
-            // }
-            // std::cout << "Weights for the layer:\n";
-            // for(auto r: m_weights){
-            //     std::cout << r << '\n';
-            // }
-            // std::cout << "Biases for the layer:\n";
-            // std::cout << m_bias << '\n';
 
             return dActivatedPrev;
         }

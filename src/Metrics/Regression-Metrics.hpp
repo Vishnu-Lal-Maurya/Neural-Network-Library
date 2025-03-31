@@ -15,7 +15,22 @@ namespace NN{
 
         double getMAE(){
             double result{0.0};
+            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
+                result += abs(m_yActual[i]-m_yPredicted[i]);
+            }
+            return result / (m_yActual.size());
         }
+
+        double getMSE(){
+            double result{0.0};
+            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
+                double difference{m_yActual[i]-m_yPredicted[i]};
+                result += difference * difference;
+            }
+            return result / (m_yActual.size());
+        }
+
+        
     private:
         row m_yActual{}, m_yPredicted{};
     };

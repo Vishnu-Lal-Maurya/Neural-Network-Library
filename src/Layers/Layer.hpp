@@ -15,45 +15,53 @@ namespace NN
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }
-        , m_bias(outputSize)
-        , m_weights(outputSize, row(inputSize))
+        , m_bias(outputSize,0.0)
+        , m_weights(outputSize, row(inputSize,0.0))
         {
             // @todo -- 
             // We'll like to do random initialization here for weights in future
         }
 
         row forwardPropagate(const row& input){
-            row result(m_outputSize);
+            // store the input for backProp
+            m_input = input;
+            // row result(m_inputSize,0); 
+            // for(int i{0}; i<m_outputSize; ++i){
+            //     std::size_t idx { toUZ(i) };
+            //     result[idx] = dot(input, m_weights[idx]) + m_bias[idx];
+            // }
 
-            for(int i{0}; i<m_outputSize; ++i){
-                std::size_t idx { toUZ(i) };
-                result[idx] = dot(input, m_weights[idx]) + m_bias[idx];
-            }
-            m_computed = result;
+            // m_computed =  w@input + rowToCol(b)
+            // Store it for use in backProp (Don't remove it)
+            m_computed = NN::matToRow(NN::add(NN::matMul(m_weights,NN::rowToColMatrix(input)),NN::rowToColMatrix(m_bias)));
 
             // Activate the output
-            result = m_activationFunction.activate(result);
-            m_ativated = result;
+            // m_computed = result;
+            
+            row result = m_activationFunction.activate(m_computed);
             return std::move_if_noexcept(result);
         }
 
-        row backwardPropogate(const row& dActivatedCurr, const row& activatedPrev, const double learningRate){
+        row backwardPropogate(const row& dActivatedCurr, double learningRate){
+            using namespace NN;
+            std::cout << "Start wala print ==> \n";
+            std::cout << dActivatedCurr << '\n';
+            std::cout << m_computed << '\n';
 
-            matrix m_dweights{};
-            row m_dbias{};
-            row m_dcomputed{};
-
-            m_dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
-            m_dweights = NN::matMul(m_dcomputed,activatedPrev); 
-            m_dbias = m_dcomputed;
-
-            row dActivatedPrev = NN::matToRow(NN::matMul(NN::transpose(m_weights),NN::rowToColMatrix(m_dcomputed)));
+            row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
+            matrix dweights = NN::matMul(dcomputed,m_input); 
+            row dbias = dcomputed;
+            
+            
+            for(auto r: dweights){
+                std::cout << r << '\n';
+            }
+            row dActivatedPrev = NN::matToRow(NN::matMul(NN::transpose(m_weights),NN::rowToColMatrix(dcomputed)));
            
-            m_weights = m_weights - NN::mul(learningRate,m_dweights);
-            m_bias = m_bias - NN::mul(learningRate,m_dbias);
+            m_weights = m_weights - NN::mul(learningRate,dweights);
+            m_bias = m_bias - NN::mul(learningRate,dbias);
 
             return dActivatedPrev;
-            
         }
 
 
@@ -69,7 +77,6 @@ namespace NN
         row m_input{};
         row m_bias{};
         row m_computed{};
-        row m_ativated{};
 
 
         const ActivationFunction& m_activationFunction;

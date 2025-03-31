@@ -4,27 +4,23 @@
 #include "Activation-Functions/Softmax.hpp"
 #include "./aliases.hpp"
 #include "./Loss-Functions/CategoricalCrossEntropy.hpp"
+#include "./Loss-Functions/MeanSquaredError.hpp"
 
 int main(){
-    int numOfInputNodes{2};
+    int numOfInputNodes{1};
     NN:: NeuralNetwork neuralNet{numOfInputNodes};
-    neuralNet.addLayer(8,NN::ReLU{});
-    // neuralNet.addLayer(10,NN::ReLU{});
-    neuralNet.addLayer(2,NN::Softmax{});
-    int epochs{3};
+    neuralNet.addLayer(1,NN::ReLU{});
+    int epochs{2};
 
     NN::matrix xtrain{
-        {0,0},
-        {0,1},
-        {1,0},
-        {10,10},
-        {10,11},
-        {11,10}
+        {0},
+        {1},
+        {2},
     };
 
-    NN::row ytrain{0,0,0,1,1,1};
+    NN::row ytrain{0,1,2};
     
-    neuralNet.train(xtrain, ytrain, epochs, 0.1, NN::CategoricalCrossEntropy{});
+    neuralNet.train(xtrain, ytrain, epochs, 0.1, NN::MeanSquaredError{});
 
     return 0;
 }

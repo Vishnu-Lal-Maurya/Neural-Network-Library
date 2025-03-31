@@ -9,20 +9,30 @@
 #include "./Loss-Functions/MeanSquaredError.hpp"
 
 int main(){
-    int numOfInputNodes{1};
+    int numOfInputNodes{2};
     NN:: NeuralNetwork neuralNet{numOfInputNodes};
-    neuralNet.addLayer(1,NN::Identity{});
-    int epochs{20};
+    neuralNet.addLayer(2,NN::Sigmoid{});
+
+    int epochs{200};
 
     NN::matrix xtrain{
-        {0},
-        {1},
-        {2},
+        {0,0},
+        {0,1},
+        {1,0},
+        {100,99},
+        {103,97},
+        {103,104},
     };
 
-    NN::row ytrain{0,1,2};
+    NN::row ytrain{0,0,0,1,1,1};
     
-    neuralNet.train(xtrain, ytrain, epochs, 0.1, NN::MeanSquaredError{});
+    neuralNet.train(xtrain, ytrain, epochs, 0.1, NN::CategoricalCrossEntropy{});
+
+    // neuralNet.printWeights();
+    // neuralNet.printBiases();
+
+    double y { neuralNet.predict(NN::row{90, 101}) };
+    std::cout << "x={90, 101}" << " y=" << y << '\n';
 
     return 0;
 }

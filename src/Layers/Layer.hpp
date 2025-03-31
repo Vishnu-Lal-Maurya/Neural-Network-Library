@@ -61,6 +61,10 @@ namespace NN
 
         int getInputSize() const { return m_inputSize; }
 
+        matrix getWeights() const { return m_weights; }
+
+        row getBiases() const { return m_bias; }
+
     private:
         int m_outputSize{};
         int m_inputSize{};

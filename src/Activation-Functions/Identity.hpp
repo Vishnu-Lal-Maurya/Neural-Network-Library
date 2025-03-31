@@ -13,7 +13,7 @@ namespace NN
         };
 
         row derivate(const row &input) const override {
-            int length { input.size() };
+            std::size_t length { input.size() };
             row result(length,1.0);
             return std::move_if_noexcept(result);
         }

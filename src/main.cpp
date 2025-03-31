@@ -2,6 +2,8 @@
 #include "Neural-Network/NeuralNetwork.hpp"
 #include "Activation-Functions/ReLU.hpp"
 #include "Activation-Functions/Softmax.hpp"
+#include "Activation-Functions/Identity.hpp"
+#include "Activation-Functions/Sigmoid.hpp"
 #include "./aliases.hpp"
 #include "./Loss-Functions/CategoricalCrossEntropy.hpp"
 #include "./Loss-Functions/MeanSquaredError.hpp"
@@ -9,8 +11,8 @@
 int main(){
     int numOfInputNodes{1};
     NN:: NeuralNetwork neuralNet{numOfInputNodes};
-    neuralNet.addLayer(1,NN::ReLU{});
-    int epochs{2};
+    neuralNet.addLayer(1,NN::Identity{});
+    int epochs{20};
 
     NN::matrix xtrain{
         {0},

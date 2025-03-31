@@ -77,7 +77,6 @@ namespace NN{
 
       void backward(const row& dLoss, double learningRate){
          row prev{ dLoss };
-         using namespace NN;
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
             prev = it->backwardPropogate(prev, learningRate);
          }

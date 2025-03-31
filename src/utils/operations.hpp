@@ -15,20 +15,13 @@ namespace NN{
     }
 
     void assertDimensions(const row& v1, const row& v2){
-        std::size_t length1{ v1.size() };
-        std::size_t length2{ v2.size() };
-        assert(length1 == length2 && "Lengths Don't match");
+        assert(v1.size() == v2.size() && "Lengths Don't match");
     }
 
     void assertDimensions(const matrix& v1, const matrix& v2){
-        std::size_t rows1{ v1.size() };
-        std::size_t rows2{ v2.size() };
-        assert(rows1 == rows2 && "Dimensions must match");
-        assert(rows1 && "Dimension should be non-zero");
-
-        std::size_t col1{ v1[0].size() };
-        std::size_t col2{ v2[0].size() };
-        assert(rows1 == rows2 && "Dimensions must match");
+        assert(v1.size() == v2.size() && "number of rows must match");
+        assert(v1.size() && "number of rows should be non-zero");
+        assert(v1[0].size() == v2[0].size() && "number of columns must match");
     }
 
     row elementWiseRowOperations(const row& v1, const row& v2, char op){
@@ -119,6 +112,7 @@ namespace NN{
         row v2 (v1.size(),val);
         return elementWiseRowOperations(v1,v2,'*');
     }
+
     row mul(const double val, const row& v1){
         row v2 (v1.size(),val);
         return elementWiseRowOperations(v1,v2,'*');
@@ -128,6 +122,7 @@ namespace NN{
         matrix m2 (m1.size(),row(m1[0].size(),val));
         return elementWiseMatrixOperations(m1,m2,'*');
     }
+
     matrix mul(const double val, const matrix& m1){
         matrix m2 (m1.size(),row(m1[0].size(),val));
         return elementWiseMatrixOperations(m1,m2,'*');
@@ -163,7 +158,6 @@ namespace NN{
     }
 
     matrix matMul(const matrix& v1, const matrix& v2){
-        assert(v1[0].size() == v2.size());
         matrix result(v1.size(), row(v2[0].size(),0));
         for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
             for(int i{0}; i < static_cast<int>(v1.size()); ++i){
@@ -178,7 +172,7 @@ namespace NN{
 
     row matToRow(const matrix& m1){
         if(m1.size()==1)return m1[0];
-        assert(m1[0].size() == 1);
+        assert(m1[0].size() == 1 && "number of columns should be 1");
         row result(m1.size());
         for(int k{0}; k < static_cast<int>(m1[0].size()) ; ++k){
             result[toUZ(k)] = m1[toUZ(k)][0];
@@ -191,21 +185,20 @@ namespace NN{
         for(int k{0}; k < static_cast<int>(v1.size()) ; ++k){
             result[toUZ(k)][0] = v1[toUZ(k)];
         }
-        return result;
+        return std::move_if_noexcept(result);
     }
 
 
-    matrix matMul(const row& v1, const row& v2){
-
+    matrix matMul(const row& v1, const row& v2){/////  deprecate
         matrix m1(v1.size(),row(1,0));
         matrix m2(1,row(v2.size(),0));
+        
+        for(int k{0}; k < static_cast<int>(v1.size()) ; ++k){
+            m1[toUZ(k)][0] = v1[toUZ(k)];
+        }
 
         for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
             m2[0][toUZ(k)] = v2[toUZ(k)];
-        }
-
-        for(int k{0}; k < static_cast<int>(v1.size()) ; ++k){
-            m1[toUZ(k)][0] = v1[toUZ(k)];
         }
 
         return matMul(m1,m2);

@@ -43,7 +43,7 @@ namespace NN{
                
                // Doing one hot encoding !(if last layer has 1 output node)'
                row actualOutput(m_layers.back().getOutputSize(),0.0);
-               if(isCalssification()){
+               if(isClassification()){
                   int index{ static_cast<int>(yTrain[toUZ(i)]) };
                   actualOutput[toUZ(index)] = 1.0;
                }  
@@ -83,7 +83,7 @@ namespace NN{
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
       
-      bool isCalssification(){
+      bool isClassification(){
          return (m_layers.back().getOutputSize() != 1);
       }
 
@@ -130,7 +130,7 @@ namespace NN{
       std::cout << "here input is: " << x << '\n';
       row output { forward(x) };
       std::cout << output << '\n';
-      if(isCalssification()){
+      if(isClassification()){
          double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
          return predictedClass;
       }

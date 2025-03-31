@@ -7,32 +7,66 @@
 #include "./aliases.hpp"
 #include "./Loss-Functions/CategoricalCrossEntropy.hpp"
 #include "./Loss-Functions/MeanSquaredError.hpp"
+#include <fstream>
+#include <string>
+#include <sstream>
+
+std::pair<NN::matrix, NN::row> readFile(std::string path ){
+    std::cout << "Path: " << path << '\n';
+    std::ifstream inputFile{ path };
+    std::string str{};
+    NN::matrix x{};
+    NN::row y{};
+    while (std::getline(inputFile, str))
+    {
+        std::stringstream os {str};
+        std::string cell{};
+
+        NN::row curr{};
+        while (getline(os, cell, ',')) {
+            curr.push_back(stod(cell));
+        }
+
+        y.push_back(curr.back());
+        curr.pop_back();
+        x.push_back(curr);
+    }
+    return {x,y};
+}
 
 int main(){
-    int numOfInputNodes{2};
-    NN:: NeuralNetwork neuralNet{numOfInputNodes};
-    neuralNet.addLayer(2,NN::Sigmoid{});
 
-    int epochs{200};
+    std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//LinearReg.csv")};
+    NN::matrix xTrain { data.first };
+    NN::row yTrain { data.second };
 
-    NN::matrix xtrain{
-        {0,0},
-        {0,1},
-        {1,0},
-        {100,99},
-        {103,97},
-        {103,104},
-    };
 
-    NN::row ytrain{0,0,0,1,1,1};
-    
-    neuralNet.train(xtrain, ytrain, epochs, 0.1, NN::CategoricalCrossEntropy{});
+    using namespace NN;
+    for(auto &row:xTrain){
+        std::cout << row << '\n';
+    }
 
-    // neuralNet.printWeights();
-    // neuralNet.printBiases();
+    std::cout << yTrain << "\n";
 
-    double y { neuralNet.predict(NN::row{90, 101}) };
-    std::cout << "x={90, 101}" << " y=" << y << '\n';
+
+    NN::NeuralNetwork neuralNet{1};
+    // neuralNet.addLayer(5,NN::ReLU{});
+    // neuralNet.addLayer(3,NN::ReLU{});
+    neuralNet.addLayer(1,NN::Identity{});
+
+    neuralNet.train(xTrain, yTrain, 100, 0.1, NN::MeanSquaredError{});
+    NN::row output{ neuralNet.predict(xTrain) };
+    // std::pair<NN::matrix, NN::row> testData {readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
+    // NN::matrix xTest { testData.first };
+    // NN::row yTest { testData.second };    
+    // using namespace NN;
+    // for(auto r: xTest){
+    //     std::cout << r << '\n';
+    // }
+    // // std::cout << yTest << '\n';
+
+    // NN::row output { neuralNet.predict(xTest) };
+    std::cout << output << '\n';
 
     return 0;
 }

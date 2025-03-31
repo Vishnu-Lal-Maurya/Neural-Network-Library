@@ -45,7 +45,7 @@ namespace NN
         row backwardPropogate(const row& dActivatedCurr, double learningRate){
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
-            matrix dweights = NN::matMul(dcomputed,m_input); 
+            matrix dweights = NN::matMul(NN::rowToColMatrix(dcomputed),m_input); 
             row dbias = dcomputed;
             
             

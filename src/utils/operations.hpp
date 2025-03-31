@@ -158,6 +158,7 @@ namespace NN{
     }
 
     matrix matMul(const matrix& v1, const matrix& v2){
+        assert(v1[0].size() == v2.size() && "dimensions error\n");
         matrix result(v1.size(), row(v2[0].size(),0));
         for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
             for(int i{0}; i < static_cast<int>(v1.size()); ++i){
@@ -189,21 +190,14 @@ namespace NN{
     }
 
 
-    matrix matMul(const row& v1, const row& v2){/////  deprecate
-        matrix m1(v1.size(),row(1,0));
+    matrix matMul(const matrix& m1, const row& v2){
         matrix m2(1,row(v2.size(),0));
-        
-        for(int k{0}; k < static_cast<int>(v1.size()) ; ++k){
-            m1[toUZ(k)][0] = v1[toUZ(k)];
-        }
-
         for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
             m2[0][toUZ(k)] = v2[toUZ(k)];
         }
-
         return matMul(m1,m2);
-
     }
+
     
     row operator+(const row& v1, const row& v2){
         return elementWiseRowOperations(v1,v2,'+');

@@ -61,7 +61,7 @@ namespace NN{
             }
 
             double avgLoss { totalLoss/(static_cast<double>(yTrain.size())) };
-            std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
+            // std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
             
          }
       }
@@ -88,12 +88,13 @@ namespace NN{
       }
 
       row forward(row input){
-   
+         using namespace NN;      
+         std::cout << "input in private: " << input << '\n';
          for(auto& layer : m_layers){
             input = layer.forwardPropagate(input);
          }
-
-         return std::move_if_noexcept(input);
+         std::cout << input << '\n';
+         return input;
       }
 
       void backward(const row& dLoss, double learningRate){
@@ -110,21 +111,31 @@ namespace NN{
    };
 
    inline row NeuralNetwork::predict(const matrix& x){
+      using namespace NN;
+      std::cout << "I'm called\n";
       row result{};
-      for(auto& input: x){
+      for(auto input: x){
+         std::cout << "\n\n";
+         std::cout << "Input is: " << input << '\n';
+         double prediction { predict(input) };
+         std::cout << "Prediction: " << prediction << '\n';
          result.push_back(predict(input));
+         std::cout << "\n\n";
       }
       return result;
    }
 
    inline double NeuralNetwork::predict(const row& x){
+      using namespace NN;
+      std::cout << "here input is: " << x << '\n';
       row output { forward(x) };
+      std::cout << output << '\n';
       if(isCalssification()){
          double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
          return predictedClass;
       }
       else{
-         return output[0u];
+         return output[0];
       }
    }
 

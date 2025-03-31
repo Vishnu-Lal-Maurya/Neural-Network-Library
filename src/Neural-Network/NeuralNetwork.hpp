@@ -25,23 +25,10 @@ namespace NN{
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction});
       }  
 
-<<<<<<< HEAD
+
+      
    private:
-=======
-      void train(int epochs,row& input){
-         while(epochs--){
-            row output { forward(input) };
-            for(auto ele: output){
-               std::cout << ele << ' ';
-            }
-            std::cout << '\n';
-            backward();
-         }
-      }
-      
-      private:
-      
->>>>>>> fbd557eb2c91b4b9be758610691ab4388c2ebe29
+
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
       
@@ -57,6 +44,7 @@ namespace NN{
       void backward(){
          
       }
+
 
    };
 

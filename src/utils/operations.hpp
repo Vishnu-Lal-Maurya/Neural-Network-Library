@@ -58,7 +58,7 @@ namespace NN{
         matrix result(numRows, row(numCols));
         for(int i{0}; i < numRows; ++i){
             for(int j{0}; j < numCols; ++j){
-                int val{};
+                double val{};
                 switch (op)
                 {
                 case '+':

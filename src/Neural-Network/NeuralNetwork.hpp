@@ -46,10 +46,13 @@ namespace NN{
                   actualOutput[0] = yTrain[toUZ(i)];
                }
                totalLoss += lossFunction.computeCost(actualOutput, output);
-               
-               // @todo
+
+               // Calculate derivative of the loss function 
+               row dLoss = lossFunction.derivative(actualOutput, output);
+
+               // @todo 
                // implement backward propagation
-               backward();
+               backward(dLoss, learningRate);
             }
 
             double avgLoss { totalLoss/(static_cast<double>(yTrain.size())) };
@@ -72,11 +75,16 @@ namespace NN{
          return std::move_if_noexcept(input);
       }
 
-      void backward(){
-         
+      void backward(const row& dLoss, double learningRate){
+         row prev{ dLoss };
+         using namespace NN;
+         std::cout << prev << '\n';
+         for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
+            std::cout << prev << '\n';
+            prev = it->backwardPropogate(prev, learningRate);
+            std::cout << prev << '\n';
+         }
       }
-
-
    };
 
 };

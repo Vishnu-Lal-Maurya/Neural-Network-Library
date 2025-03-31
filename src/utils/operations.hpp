@@ -183,7 +183,7 @@ namespace NN{
         for(int k{0}; k < static_cast<int>(m1[0].size()) ; ++k){
             result[toUZ(k)] = m1[toUZ(k)][0];
         }
-        result;
+        return std::move_if_noexcept(result);
     }
 
     matrix rowToColMatrix(const row& v1){

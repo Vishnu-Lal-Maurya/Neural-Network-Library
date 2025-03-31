@@ -13,7 +13,7 @@ namespace NN{
             assert(m_yActual.size() == m_yPredicted.size() && "Mismatch size of yActual and yPredicted");
         }
 
-        double getMAE(){
+        double getMAE() const {
             double result{0.0};
             for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
                 result += abs(m_yActual[i]-m_yPredicted[i]);
@@ -21,7 +21,7 @@ namespace NN{
             return result / (m_yActual.size());
         }
 
-        double getMSE(){
+        double getMSE() const {
             double result{0.0};
             for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
                 double difference{m_yActual[i]-m_yPredicted[i]};

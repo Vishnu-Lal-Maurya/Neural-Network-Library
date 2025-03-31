@@ -13,7 +13,7 @@ namespace NN{
             assert(yActual.size() == yPredicted.size() && "Mismatch size of yActual and yPredicted");
         }
         
-        double getAccuracy(){
+        double getAccuracy() const {
             int correctPredictions{0};
             double totalPredictions{static_cast<double>(m_yActual.size())};
             for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
@@ -23,7 +23,7 @@ namespace NN{
             return correctPredictions/totalPredictions;
         }
 
-        double getPrecision(const int& trueClass){
+        double getPrecision(int trueClass) const {
             int truePositives{}, falsePositives{};
             for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
                 if(m_yPredicted[i] == trueClass){
@@ -38,7 +38,7 @@ namespace NN{
             return static_cast<double>(truePositives) / (truePositives + falsePositives);
         }
 
-        double getAvgPrecision(const int& totalClasses){
+        double getAvgPrecision(int totalClasses) const {
             double result{};
             for(int i{0}; i< totalClasses; ++i){
                 result += getPrecision(i);
@@ -47,7 +47,7 @@ namespace NN{
         }
         
 
-        double getRecall(const int& trueClass){
+        double getRecall(int trueClass) const {
             int truePositives{}, falseNegatives{};
             for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
                 if(m_yActual[i] == trueClass){
@@ -62,7 +62,7 @@ namespace NN{
             return static_cast<double>(truePositives) / (truePositives + falseNegatives);
         }
 
-        double getAvgRecall(const int& totalClasses){
+        double getAvgRecall(int totalClasses) const {
             double result{};
             for(int i{0}; i< totalClasses; ++i){
                 result += getRecall(i);
@@ -70,7 +70,7 @@ namespace NN{
             return result / totalClasses;
         }
 
-        double getF1Score(const int& totalClasses){
+        double getF1Score(int totalClasses) const {
             double avgPrecision(getAvgPrecision(totalClasses));
             double avgRecall(getAvgRecall(totalClasses));
             return (2 * avgPrecision * avgRecall) / (avgPrecision + avgRecall);

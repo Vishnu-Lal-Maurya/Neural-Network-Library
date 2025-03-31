@@ -26,10 +26,7 @@ namespace NN{
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction});
       }  
 
-
-      
    private:
-
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
 
@@ -40,8 +37,6 @@ namespace NN{
          }
 
       }
-
-
 
    };
 

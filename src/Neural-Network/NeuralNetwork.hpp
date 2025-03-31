@@ -15,7 +15,6 @@ namespace NN{
       NeuralNetwork(int inputDim)
       : m_inputDim{inputDim}
       {
-
       }
       
       void addLayer(int currNumOfNodes, const NN::ActivationFunction& activationFunction){
@@ -26,19 +25,28 @@ namespace NN{
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction});
       }  
 
-
+      void train(int epochs,row& input){
+         while(epochs--){
+            forward(input);
+            backward();
+         }
+      }
       
-   private:
-
+      private:
+      
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
-
+      
       void forward(row input){
-
+   
          for(auto layer : m_layers){
             input = layer.forwardPropagate(input);
          }
+   
+      }
 
+      void backward(){
+         
       }
 
 

@@ -40,8 +40,7 @@ namespace NN{
             for(int i{0}; i<xTrain.size(); ++i){
 
                row output { forward(xTrain[i]) };
-               
-               // Doing one hot encoding !(if last layer has 1 output node)'
+
                row actualOutput(m_layers.back().getOutputSize(),0.0);
                if(isCalssification()){
                   int index{ static_cast<int>(yTrain[toUZ(i)]) };
@@ -61,7 +60,7 @@ namespace NN{
             }
 
             double avgLoss { totalLoss/(static_cast<double>(yTrain.size())) };
-            // std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
+            std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
             
          }
       }
@@ -88,48 +87,30 @@ namespace NN{
       }
 
       row forward(row input){
-         using namespace NN;      
-         std::cout << "input in private: " << input << '\n';
          for(auto& layer : m_layers){
             input = layer.forwardPropagate(input);
          }
-         std::cout << input << '\n';
          return input;
       }
 
       void backward(const row& dLoss, double learningRate){
          row prev{ dLoss };
-         // using namespace NN;
-         // std::cout << "dLoss: ";
-         // std::cout << prev << '\n';
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
             prev = it->backwardPropogate(prev, learningRate);
-            // std::cout << "dA: ";
-            // std::cout << prev << '\n';
          }
       }
    };
 
    inline row NeuralNetwork::predict(const matrix& x){
-      using namespace NN;
-      std::cout << "I'm called\n";
       row result{};
       for(auto input: x){
-         std::cout << "\n\n";
-         std::cout << "Input is: " << input << '\n';
-         double prediction { predict(input) };
-         std::cout << "Prediction: " << prediction << '\n';
          result.push_back(predict(input));
-         std::cout << "\n\n";
       }
       return result;
    }
 
    inline double NeuralNetwork::predict(const row& x){
-      using namespace NN;
-      std::cout << "here input is: " << x << '\n';
       row output { forward(x) };
-      std::cout << output << '\n';
       if(isCalssification()){
          double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
          return predictedClass;

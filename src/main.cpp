@@ -12,7 +12,6 @@
 #include <sstream>
 
 std::pair<NN::matrix, NN::row> readFile(std::string path ){
-    std::cout << "Path: " << path << '\n';
     std::ifstream inputFile{ path };
     std::string str{};
     NN::matrix x{};
@@ -41,32 +40,14 @@ int main(){
     NN::row yTrain { data.second };
 
 
-    using namespace NN;
-    for(auto &row:xTrain){
-        std::cout << row << '\n';
-    }
-
-    std::cout << yTrain << "\n";
-
-
     NN::NeuralNetwork neuralNet{1};
-    // neuralNet.addLayer(5,NN::ReLU{});
-    // neuralNet.addLayer(3,NN::ReLU{});
-    neuralNet.addLayer(1,NN::Identity{});
+    NN::Identity idt{};
+    neuralNet.addLayer(1,idt);
 
-    neuralNet.train(xTrain, yTrain, 100, 0.1, NN::MeanSquaredError{});
+    NN::MeanSquaredError mse{};
+    neuralNet.train(xTrain, yTrain, 100, 0.1, mse);
     NN::row output{ neuralNet.predict(xTrain) };
-    // std::pair<NN::matrix, NN::row> testData {readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
-    // NN::matrix xTest { testData.first };
-    // NN::row yTest { testData.second };    
-    // using namespace NN;
-    // for(auto r: xTest){
-    //     std::cout << r << '\n';
-    // }
-    // // std::cout << yTest << '\n';
-
-    // NN::row output { neuralNet.predict(xTest) };
+    using namespace NN;
     std::cout << output << '\n';
-
     return 0;
 }

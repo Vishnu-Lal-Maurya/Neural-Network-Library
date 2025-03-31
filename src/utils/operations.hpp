@@ -3,8 +3,16 @@
 
 #include "../aliases.hpp"
 #include <cassert>
+#include <chrono>
+#include <random>
 
 namespace NN{
+
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+    double randInRange(double lowerBound, double upperBound){
+        return std::uniform_real_distribution<double> (lowerBound, upperBound)(rng);
+    }
 
     void assertDimensions(const row& v1, const row& v2){
         std::size_t length1{ v1.size() };
@@ -234,6 +242,24 @@ namespace NN{
 
     matrix operator/(const matrix& v1, const matrix& v2){
         return elementWiseMatrixOperations(v1,v2,'/');
+    }
+
+    matrix randMatrix(int rows, int cols){
+        matrix output(rows,row(cols));
+        for(int i{0}; i < rows; ++i){
+            for(int j{0}; j < cols; ++j){
+                output[i][j] = randInRange(-1.0,1.0);
+            }
+        }
+        return std::move_if_noexcept(output);
+    }
+
+    row randRow(int cols){
+        row output(cols);
+        for(auto& i : output){
+            i = randInRange(-1.0,1.0);
+        }
+        return std::move_if_noexcept(output);
     }
 }
 

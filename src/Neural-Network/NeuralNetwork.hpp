@@ -42,7 +42,7 @@ namespace NN{
                row output { forward(xTrain[i]) };
 
                row actualOutput(m_layers.back().getOutputSize(),0.0);
-               if(isCalssification()){
+               if(isClassification()){
                   int index{ static_cast<int>(yTrain[toUZ(i)]) };
                   actualOutput[toUZ(index)] = 1.0;
                }  
@@ -82,7 +82,7 @@ namespace NN{
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
       
-      bool isCalssification(){
+      bool isClassification(){
          return (m_layers.back().getOutputSize() != 1);
       }
 
@@ -111,7 +111,8 @@ namespace NN{
 
    inline double NeuralNetwork::predict(const row& x){
       row output { forward(x) };
-      if(isCalssification()){
+      std::cout << output << '\n';
+      if(isClassification()){
          double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
          return predictedClass;
       }

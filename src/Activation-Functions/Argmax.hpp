@@ -20,6 +20,8 @@ namespace NN{
             throw "Can't take derivative of ArgMax";
             return row{};
         }
+
+        virtual ~Argmax() = default;
     };
 };
 

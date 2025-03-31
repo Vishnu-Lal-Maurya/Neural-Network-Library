@@ -26,6 +26,7 @@ namespace NN {
          return result;
       }
 
+      virtual ~Tanh() = default;
    };
    
  

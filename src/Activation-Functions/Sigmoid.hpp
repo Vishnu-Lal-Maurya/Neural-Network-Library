@@ -28,6 +28,8 @@ namespace NN{
             return std::move_if_noexcept(result);
         }
 
+        virtual ~Sigmoid() = default;
+
     private:
         double eval(double x) const {
             return 1.0/(1.0 + exp(-x));

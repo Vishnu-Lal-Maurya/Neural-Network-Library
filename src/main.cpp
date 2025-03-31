@@ -45,8 +45,12 @@ int main(){
     neuralNet.addLayer(1,idt);
 
     NN::MeanSquaredError mse{};
-    neuralNet.train(xTrain, yTrain, 100, 0.1, mse);
-    NN::row output{ neuralNet.predict(xTrain) };
+    neuralNet.train(xTrain, yTrain, 300, 0.001, mse);
+
+    std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
+    NN::matrix xTest { testData.first };
+    NN::row yTest { testData.second };
+    NN::row output{ neuralNet.predict(xTest) };
     using namespace NN;
     std::cout << output << '\n';
     return 0;

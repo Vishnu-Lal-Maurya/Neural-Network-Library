@@ -17,6 +17,8 @@ namespace NN
             row result(length,1.0);
             return std::move_if_noexcept(result);
         }
+
+        virtual ~Identity() = default;
     };
 };
 

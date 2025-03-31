@@ -30,6 +30,8 @@ namespace NN{
             }
             return std::move_if_noexcept(result);
         }
+
+        virtual ~Softmax() = default;
     };
 };
 

@@ -39,6 +39,11 @@ namespace NN
             // m_computed = result;
             
             row result = m_activationFunction.activate(m_computed);
+
+            #ifdef DEBUG
+                std::cout << "Result of forward prop in layer: ";
+                std::cout << result << '\n';
+            #endif
             return result;
         }
 

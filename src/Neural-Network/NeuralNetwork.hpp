@@ -87,17 +87,37 @@ namespace NN{
       }
 
       row forward(row input){
+         #ifdef DEBUG
+            std::cout << "Forward Propagation started...\n";
+         #endif
          for(auto& layer : m_layers){
             input = layer.forwardPropagate(input);
          }
+         #ifdef DEBUG
+            std::cout << "Result of forward Propagation:";
+            std::cout << input << '\n';
+            std::cout << "\n\n\n";
+         #endif
          return input;
       }
 
       void backward(const row& dLoss, double learningRate){
+         #ifdef DEBUG
+            std::cout << "Backward Propagation started...\n";
+         #endif
          row prev{ dLoss };
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
             prev = it->backwardPropagate(prev, learningRate);
          }
+         #ifdef DEBUG
+            std::cout << "Weights and biases after backProp:\n";
+            for(auto layer: m_layers){
+               std::cout << "Weights:\n";
+               std::cout << layer.getWeights() << '\n';
+               std::cout << "Biases:\n";
+               std::cout << layer.getBiases() << '\n';
+            }
+         #endif
       }
    };
 

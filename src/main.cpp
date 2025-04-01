@@ -1,3 +1,5 @@
+#define DEBUG d
+
 #include <iostream>
 #include "Neural-Network/NeuralNetwork.hpp"
 #include "Activation-Functions/ReLU.hpp"
@@ -10,6 +12,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+
+
 
 std::pair<NN::matrix, NN::row> readFile(std::string path ){
     std::ifstream inputFile{ path };
@@ -67,11 +71,11 @@ int main(){
     NN::NeuralNetwork nn{2};
     NN::ReLU relu{};
     NN::Softmax sft{};
-    nn.addLayer(4,sft);
+    nn.addLayer(1,relu);
     nn.addLayer(2,sft);
 
     NN::CategoricalCrossEntropy los{};
-    nn.train(x,y,80,0.1,los);
+    nn.train(x,y,4,0.1,los);
 
     double pred = nn.predict(NN::row{1,0});
     std::cout << pred << '\n';

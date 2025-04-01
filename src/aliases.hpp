@@ -19,8 +19,11 @@ namespace NN{
 
     std::ostream& operator<<(std::ostream& out,const matrix& v){
         out << '[';
-        for(auto r: v){
-            out << r << '\n';
+        for(std::size_t i{0}; i<v.size(); ++i){
+            out << v[i];
+            if(i!=v.size()-1){
+                out << '\n';
+            }
         }
         return out << ']';
     }

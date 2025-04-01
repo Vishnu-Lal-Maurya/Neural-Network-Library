@@ -15,7 +15,7 @@ namespace NN{
                 ele = eval(ele);
             }
 
-            return std::move_if_noexcept(result);
+            return result;
         }
 
         row derivate(const row& input) const override{
@@ -25,7 +25,7 @@ namespace NN{
                 ele = (eval(ele) * (1.0 - eval(ele)));
             }
 
-            return std::move_if_noexcept(result);
+            return result;
         }
 
         virtual ~Sigmoid() = default;

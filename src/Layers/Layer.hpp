@@ -39,10 +39,10 @@ namespace NN
             // m_computed = result;
             
             row result = m_activationFunction.activate(m_computed);
-            return std::move_if_noexcept(result);
+            return result;
         }
 
-        row backwardPropogate(const row& dActivatedCurr, double learningRate){
+        row backwardPropagate(const row& dActivatedCurr, double learningRate){
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
             matrix dweights = NN::matMul(NN::rowToColMatrix(dcomputed),m_input); 

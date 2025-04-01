@@ -7,3 +7,5 @@ rough.txt
 *.exe
 *.out
 *.cph
+
+/src/main.cpp

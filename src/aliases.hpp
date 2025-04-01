@@ -17,7 +17,16 @@ namespace NN{
         return out << ']';
     }
 
+    std::ostream& operator<<(std::ostream& out,const matrix& v){
+        out << '[';
+        for(auto r: v){
+            out << r << '\n';
+        }
+        return out << ']';
+    }
+
     std::size_t toUZ(int x){
+        if (x < 0) throw std::invalid_argument("Negative value cannot be converted to std::size_t");
         return static_cast<std::size_t>(x);
     }
 };

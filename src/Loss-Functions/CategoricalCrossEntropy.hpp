@@ -21,6 +21,7 @@ namespace NN
 
         row derivative(const row &yActual, const row &yPredicted) const override {
             row result{};
+            result.reserve(yActual.size());
             for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
                 result.push_back(yPredicted[toUZ(i)] - yActual[toUZ(i)]);
             }

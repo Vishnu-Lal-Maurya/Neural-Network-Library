@@ -82,7 +82,7 @@ namespace NN{
       std::vector<NN::Layer> m_layers{};
       int m_inputDim{};
       
-      bool isClassification(){
+      bool isClassification() const {
          return (m_layers.back().getOutputSize() != 1);
       }
 
@@ -96,13 +96,14 @@ namespace NN{
       void backward(const row& dLoss, double learningRate){
          row prev{ dLoss };
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
-            prev = it->backwardPropogate(prev, learningRate);
+            prev = it->backwardPropagate(prev, learningRate);
          }
       }
    };
 
    inline row NeuralNetwork::predict(const matrix& x){
       row result{};
+      result.reserve(x.size());
       for(auto input: x){
          result.push_back(predict(input));
       }

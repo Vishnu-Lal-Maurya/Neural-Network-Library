@@ -20,7 +20,7 @@ namespace NN{
             for(auto i : input){
                 result.emplace_back(exp(i) / denominator);
             }
-            return std::move_if_noexcept(result);
+            return result;
         };
 
         row derivate(const row& input) const override{
@@ -28,7 +28,7 @@ namespace NN{
             for(auto &i : result){
                 i *= (1 - i);
             }
-            return std::move_if_noexcept(result);
+            return result;
         }
 
         virtual ~Softmax() = default;

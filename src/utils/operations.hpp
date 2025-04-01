@@ -19,6 +19,7 @@ namespace NN{
     }
 
     void assertDimensions(const matrix& v1, const matrix& v2){
+        assert(!v1.empty() && !v2.empty() && "Matrix must have at least one row");
         assert(v1.size() == v2.size() && "number of rows must match");
         assert(v1.size() && "number of rows should be non-zero");
         assert(v1[0].size() == v2[0].size() && "number of columns must match");
@@ -48,7 +49,7 @@ namespace NN{
                 break;
             }
         }
-        return std::move_if_noexcept(result);
+        return result;
     }
 
     matrix elementWiseMatrixOperations(const matrix& v1, const matrix& v2, char op){
@@ -80,7 +81,7 @@ namespace NN{
             }
         }
 
-        return std::move_if_noexcept(result);
+        return result;
     }
 
     row add(const row& v1, const row& v2){
@@ -172,13 +173,13 @@ namespace NN{
     }
 
     row matToRow(const matrix& m1){
-        if(m1.size()==1)return m1[0];
+        if(m1.size()==1) return row{m1[0]};
         assert(m1[0].size() == 1 && "number of columns should be 1");
         row result(m1.size());
-        for(int k{0}; k < static_cast<int>(m1[0].size()) ; ++k){
+        for(int k{0}; k < static_cast<int>(m1.size()) ; ++k){
             result[toUZ(k)] = m1[toUZ(k)][0];
         }
-        return std::move_if_noexcept(result);
+        return result;
     }
 
     matrix rowToColMatrix(const row& v1){
@@ -186,7 +187,7 @@ namespace NN{
         for(int k{0}; k < static_cast<int>(v1.size()) ; ++k){
             result[toUZ(k)][0] = v1[toUZ(k)];
         }
-        return std::move_if_noexcept(result);
+        return result;
     }
 
 
@@ -238,7 +239,7 @@ namespace NN{
                 result[i][j] = randInRange(-1.0,1.0);
             }
         }
-        return std::move_if_noexcept(result);
+        return result;
     }
 
     row randRow(int cols){
@@ -246,7 +247,7 @@ namespace NN{
         for(auto& i : result){
             i = randInRange(-1.0,1.0);
         }
-        return std::move_if_noexcept(result);
+        return result;
     }
 }
 

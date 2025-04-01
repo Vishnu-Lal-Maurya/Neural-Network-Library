@@ -12,7 +12,7 @@ namespace NN {
       row activate(const row& input) const override {
          row result(input);
          for(auto &ele : result){
-            ele = ( exp(ele) - exp(-ele) ) / ( exp(ele) + exp(-ele) );
+            ele = std::tanh(ele);
          }
          return result;
       };

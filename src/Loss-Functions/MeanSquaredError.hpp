@@ -25,7 +25,7 @@ namespace NN{
         row derivative(const row& yActual, const row& yPredicted) const override {
 
             int length { static_cast<int>(yActual.size()) };
-            row result(length);
+            row result(length, 0.0);
 
             for(int i{0}; i<length; ++i){
                 std::size_t x { static_cast<std::size_t>(i) };

@@ -1,4 +1,3 @@
-#define DEBUG d
 
 #include <iostream>
 #include "Neural-Network/NeuralNetwork.hpp"
@@ -9,11 +8,15 @@
 #include "./aliases.hpp"
 #include "./Loss-Functions/CategoricalCrossEntropy.hpp"
 #include "./Loss-Functions/MeanSquaredError.hpp"
+#include "Activation-Functions/Tanh.hpp"
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <random>
 
-
+using NN::row;
+using NN::matrix;
+typedef std::pair<matrix, row> DataPair;
 
 std::pair<NN::matrix, NN::row> readFile(std::string path ){
     std::ifstream inputFile{ path };
@@ -37,13 +40,108 @@ std::pair<NN::matrix, NN::row> readFile(std::string path ){
     return {x,y};
 }
 
+DataPair normalizeData(const matrix& x, const row& y) {
+    matrix xNorm = x;
+    row yNorm = y;
+    
+    // Find min and max for each feature in x
+    size_t numFeatures = x[0].size();
+    row xMin(numFeatures, std::numeric_limits<double>::max());
+    row xMax(numFeatures, std::numeric_limits<double>::lowest());
+    double yMin = *std::min_element(y.begin(), y.end());
+    double yMax = *std::max_element(y.begin(), y.end());
+    
+    for (const auto& row : x) {
+        for (size_t i = 0; i < numFeatures; ++i) {
+            xMin[i] = std::min(xMin[i], row[i]);
+            xMax[i] = std::max(xMax[i], row[i]);
+        }
+    }
+    
+    // Normalize x
+    for (auto& row : xNorm) {
+        for (size_t i = 0; i < numFeatures; ++i) {
+            row[i] = (row[i] - xMin[i]) / (xMax[i] - xMin[i]);
+        }
+    }
+    
+    // Normalize y
+    for (size_t i = 0; i < yNorm.size(); ++i) {
+        yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
+    }
+    
+    return {xNorm, yNorm};
+}
+
+std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
+    matrix xNorm = x;
+    row yNorm = y;
+
+    size_t numFeatures = x[0].size();
+    row xMean(numFeatures, 0.0);
+    row xStd(numFeatures, 0.0);
+    double yMean = 0.0;
+    double yStd = 0.0;
+
+    // Compute mean for each feature in x
+    for (const auto& row : x) {
+        for (size_t i = 0; i < numFeatures; ++i) {
+            xMean[i] += row[i];
+        }
+    }
+    for (size_t i = 0; i < numFeatures; ++i) {
+        xMean[i] /= x.size();
+    }
+
+    // Compute standard deviation for each feature in x
+    for (const auto& row : x) {
+        for (size_t i = 0; i < numFeatures; ++i) {
+            xStd[i] += std::pow(row[i] - xMean[i], 2);
+        }
+    }
+    for (size_t i = 0; i < numFeatures; ++i) {
+        xStd[i] = std::sqrt(xStd[i] / x.size());
+        if (xStd[i] == 0) xStd[i] = 1;  // Prevent division by zero
+    }
+
+    // Normalize x
+    for (auto& row : xNorm) {
+        for (size_t i = 0; i < numFeatures; ++i) {
+            row[i] = (row[i] - xMean[i]) / xStd[i];
+        }
+    }
+
+    // Compute mean and std for y
+    for (double val : y) {
+        yMean += val;
+    }
+    yMean /= y.size();
+
+    for (double val : y) {
+        yStd += std::pow(val - yMean, 2);
+    }
+    yStd = std::sqrt(yStd / y.size());
+    if (yStd == 0) yStd = 1;  // Prevent division by zero
+
+    // Normalize y
+    for (size_t i = 0; i < yNorm.size(); ++i) {
+        yNorm[i] = (yNorm[i] - yMean) / yStd;
+    }
+
+    return {xNorm, yNorm};
+}
+
 int main(){
 
-    // std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//LinearReg.csv")};
-    // NN::matrix xTrain { data.first };
-    // NN::row yTrain { data.second };
+    std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//iris.csv")};
+    NN::matrix xTrain { data.first };
+    NN::row yTrain { data.second };
+    std::pair<NN::matrix, NN::row> normalizedData = zScoreNormalize(xTrain, yTrain);
+    NN::matrix xTrainNorm = normalizedData.first;
+    NN::row yTrainNorm = normalizedData.second;
 
-
+    // NN::matrix xTrainNorm = xTrain;
+    // NN::row yTrainNorm = yTrain;
     // NN::NeuralNetwork neuralNet{1};
     // NN::Identity idt{};
     // neuralNet.addLayer(1,idt);
@@ -51,33 +149,46 @@ int main(){
     // NN::MeanSquaredError mse{};
     // neuralNet.train(xTrain, yTrain, 300, 0.001, mse);
 
+
+    // NN::matrix x{
+    //     {0},
+    //     {1},
+    //     {2},
+    //     {3},
+    //     {4},
+    //     {5}
+    // };
+    // NN::row y{0,1,2,3,4,5}; 
+
+    NN::NeuralNetwork nn{4};
+    NN::ReLU relu{};
+    NN::Softmax sft{};
+    NN::Sigmoid sgd{};
+    NN::Identity idt{};
+    NN::Tanh tnh{};
+    nn.addLayer(4,relu);
+    nn.addLayer(4,relu);
+    nn.addLayer(1,idt);
+
+    NN::CategoricalCrossEntropy los{};
+    nn.train(xTrainNorm, yTrainNorm, 500, 0.001, los);
+
+    // std::cout << "Testing Started.................\n";
+
     // std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
     // NN::matrix xTest { testData.first };
     // NN::row yTest { testData.second };
-    // NN::row output{ neuralNet.predict(xTest) };
+    // NN::row output{ nn.predict(xTest) };
+
     // using namespace NN;
     // std::cout << output << '\n';
 
-    NN::matrix x{
-        {0,0},
-        {1,1},
-        {2,2},
-        {0,10},
-        {1,11},
-        {2,12}
-    };
-    NN::row y{0,0,0,1,1,1}; 
+    // double pred = nn.predict(NN::row{7});
+    // std::cout << pred << '\n';
 
-    NN::NeuralNetwork nn{2};
-    NN::ReLU relu{};
-    NN::Softmax sft{};
-    nn.addLayer(1,relu);
-    nn.addLayer(2,sft);
+    // double pred1 = nn.predict(NN::row{10});
+    // std::cout << pred1 << '\n';
 
-    NN::CategoricalCrossEntropy los{};
-    nn.train(x,y,4,0.1,los);
-
-    double pred = nn.predict(NN::row{1,0});
-    std::cout << pred << '\n';
+    
     return 0;
 }

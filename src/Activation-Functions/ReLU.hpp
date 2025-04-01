@@ -19,7 +19,7 @@ namespace NN
         row derivate(const row &input) const override {
             row result{ input };
             for(auto& ele: result){
-                ele = ((ele>0.0)? 1.0:0.0);
+                ele = ((ele>=0.0)? 1.0:0.0);
             }
             return result;
         }

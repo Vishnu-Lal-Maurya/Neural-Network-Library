@@ -30,12 +30,16 @@ namespace NN{
 
       double predict(const row& x);
 
-      void train(const matrix& xTrain, const row& yTrain, int epochs, double learningRate, const LossFunction& lossFunction){
+      void train(matrix xTrain, row yTrain, int epochs, double learningRate, const LossFunction& lossFunction){
          assert((xTrain.size() == yTrain.size()) && "x_train and y_train sizes don't match");
 
          
          // Run the epochs -
          for(int ep{1}; ep<=epochs; ++ep){
+            shuffleData(xTrain, yTrain);
+            #ifdef DEBUG
+               std::cout << "\n\nEpoch: " << ep << "............................\n";
+            #endif
             double totalLoss{ 0.0 };
             for(int i{0}; i<xTrain.size(); ++i){
 
@@ -49,14 +53,24 @@ namespace NN{
                else{
                   actualOutput[0] = yTrain[toUZ(i)];
                }
+               #ifdef DEBUG
+                  std::cout << "Loss: " << lossFunction.computeCost(actualOutput, output) << '\n';
+               #endif
                totalLoss += lossFunction.computeCost(actualOutput, output);
 
                // Calculate derivative of the loss function 
                row dLoss = lossFunction.derivative(actualOutput, output);
-
+               #ifdef DEBUG
+                  std::cout << "dLoss: " << dLoss << '\n';
+               #endif
                // @todo 
                // implement backward propagation
                backward(dLoss, learningRate);
+
+            #ifdef DEBUG
+               std::cout << "Result of forward Propagation:";
+               std::cout << "\n\n";
+            #endif
             }
 
             double avgLoss { totalLoss/(static_cast<double>(yTrain.size())) };
@@ -96,7 +110,6 @@ namespace NN{
          #ifdef DEBUG
             std::cout << "Result of forward Propagation:";
             std::cout << input << '\n';
-            std::cout << "\n\n\n";
          #endif
          return input;
       }
@@ -118,6 +131,28 @@ namespace NN{
                std::cout << layer.getBiases() << '\n';
             }
          #endif
+      }
+
+      void shuffleData(NN::matrix& x, NN::row& y) {
+         std::vector<size_t> indices(x.size());
+         std::iota(indices.begin(), indices.end(), 0); // Fill with 0,1,2,...,N-1
+     
+         std::random_device rd;
+         std::mt19937 g(rd()); // Random engine
+     
+         std::shuffle(indices.begin(), indices.end(), g); // Shuffle indices
+     
+         // Rearrange x and y according to shuffled indices
+         NN::matrix xShuffled(x.size());
+         NN::row yShuffled(y.size());
+     
+         for (size_t i = 0; i < indices.size(); ++i) {
+             xShuffled[i] = x[indices[i]];
+             yShuffled[i] = y[indices[i]];
+         }
+     
+         x = std::move(xShuffled);
+         y = std::move(yShuffled);
       }
    };
 

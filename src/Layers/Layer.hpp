@@ -16,7 +16,7 @@ namespace NN
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }
         , m_bias(outputSize,0.0)
-        , m_weights(outputSize, row(inputSize,0.0))
+        , m_weights(outputSize, row(inputSize,1.0))
         {
             // @todo -- 
             // We'll like to do random initialization here for weights in future

@@ -1,7 +1,7 @@
 #ifndef CLASSIFICATIONMETRICS_H
 #define CLASSIFICATIONMETRICS_H
 
-#include "aliases.hpp"
+#include "../aliases.hpp"
 #include <cassert>
 
 namespace NN{

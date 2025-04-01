@@ -64,10 +64,10 @@ DataPair normalizeData(const matrix& x, const row& y) {
         }
     }
     
-    // Normalize y
-    for (size_t i = 0; i < yNorm.size(); ++i) {
-        yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
-    }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
+    // }
     
     return {xNorm, yNorm};
 }
@@ -88,6 +88,7 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
             xMean[i] += row[i];
         }
     }
+
     for (size_t i = 0; i < numFeatures; ++i) {
         xMean[i] /= x.size();
     }
@@ -126,16 +127,22 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
     // for (size_t i = 0; i < yNorm.size(); ++i) {
     //     yNorm[i] = (yNorm[i] - yMean) / yStd;
     // }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMean) / yStd;
+    // }
 
     return {xNorm, y};
 }
 
 int main(){
 
-    std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//iris.csv")};
+    std::pair<NN::matrix, NN::row> data {readFile("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/Simple-Datasets/Quadratic.csv")};
+    // #ifdef piyush
     NN::matrix xTrain { data.first };
     NN::row yTrain { data.second };
     std::pair<NN::matrix, NN::row> normalizedData = zScoreNormalize(xTrain, yTrain);
+    // std::pair<NN::matrix, NN::row> normalizedData = data;
     NN::matrix xTrainNorm = normalizedData.first;
     NN::row yTrainNorm = normalizedData.second;
 
@@ -159,7 +166,7 @@ int main(){
     // };
     // NN::row y{0,1,2,3,4,5}; 
 
-    NN::NeuralNetwork nn{4};
+    NN::NeuralNetwork nn{1};
     NN::ReLU relu{};
     NN::Softmax sft{};
     NN::Sigmoid sgd{};
@@ -191,7 +198,8 @@ int main(){
 
     // double pred1 = nn.predict(NN::row{10});
     // std::cout << pred1 << '\n';
-
+    // #endif
+    // dout.close();
     
     return 0;
 }

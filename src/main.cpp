@@ -65,10 +65,10 @@ DataPair normalizeData(const matrix& x, const row& y) {
         }
     }
     
-    // Normalize y
-    for (size_t i = 0; i < yNorm.size(); ++i) {
-        yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
-    }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
+    // }
     
     return {xNorm, yNorm};
 }
@@ -89,6 +89,7 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
             xMean[i] += row[i];
         }
     }
+
     for (size_t i = 0; i < numFeatures; ++i) {
         xMean[i] /= x.size();
     }
@@ -123,20 +124,24 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
     yStd = std::sqrt(yStd / y.size());
     if (yStd == 0) yStd = 1;  // Prevent division by zero
 
-    // Normalize y
-    for (size_t i = 0; i < yNorm.size(); ++i) {
-        yNorm[i] = (yNorm[i] - yMean) / yStd;
-    }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMean) / yStd;
+    // }
 
     return {xNorm, yNorm};
 }
 
+std::ofstream dout("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/src/dump.txt");
+
 int main(){
 
-    std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//iris.csv")};
+    std::pair<NN::matrix, NN::row> data {readFile("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/Simple-Datasets/Quadratic.csv")};
+    // #ifdef piyush
     NN::matrix xTrain { data.first };
     NN::row yTrain { data.second };
     std::pair<NN::matrix, NN::row> normalizedData = zScoreNormalize(xTrain, yTrain);
+    // std::pair<NN::matrix, NN::row> normalizedData = data;
     NN::matrix xTrainNorm = normalizedData.first;
     NN::row yTrainNorm = normalizedData.second;
 
@@ -160,27 +165,29 @@ int main(){
     // };
     // NN::row y{0,1,2,3,4,5}; 
 
-    NN::NeuralNetwork nn{4};
+    NN::NeuralNetwork nn{1};
     NN::ReLU relu{};
     NN::Softmax sft{};
     NN::Sigmoid sgd{};
     NN::Identity idt{};
     NN::Tanh tnh{};
     nn.addLayer(4,relu);
-    nn.addLayer(4,relu);
+    nn.addLayer(10,relu);
+    nn.addLayer(10,relu);
     nn.addLayer(1,idt);
 
-    NN::CategoricalCrossEntropy los{};
+    NN::MeanSquaredError los{};
     nn.train(xTrainNorm, yTrainNorm, 500, 0.001, los);
 
-    // std::cout << "Testing Started.................\n";
+    std::cout << "Testing Started.................\n";
 
-    // std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
-    // NN::matrix xTest { testData.first };
-    // NN::row yTest { testData.second };
-    // NN::row output{ nn.predict(xTest) };
+    std::pair<NN::matrix, NN::row> testData{readFile("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/Simple-Datasets/QuadraticTest.csv")};
+    NN::matrix xTest { testData.first };
+    NN::row yTest { testData.second };
+    NN::row output{ nn.predict(xTest) };
 
-    // using namespace NN;
+    using namespace NN;
+    std::cout << yTest << '\n';
     // std::cout << output << '\n';
 
     // double pred = nn.predict(NN::row{7});
@@ -188,7 +195,8 @@ int main(){
 
     // double pred1 = nn.predict(NN::row{10});
     // std::cout << pred1 << '\n';
-
+    // #endif
+    dout.close();
     
     return 0;
 }

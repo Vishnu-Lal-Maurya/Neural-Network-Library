@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "Neural-Network/NeuralNetwork.hpp"
 #include "Activation-Functions/ReLU.hpp"
@@ -111,24 +110,24 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
         }
     }
 
-    // Compute mean and std for y
-    for (double val : y) {
-        yMean += val;
-    }
-    yMean /= y.size();
+    // // Compute mean and std for y
+    // for (double val : y) {
+    //     yMean += val;
+    // }
+    // yMean /= y.size();
 
-    for (double val : y) {
-        yStd += std::pow(val - yMean, 2);
-    }
-    yStd = std::sqrt(yStd / y.size());
-    if (yStd == 0) yStd = 1;  // Prevent division by zero
+    // for (double val : y) {
+    //     yStd += std::pow(val - yMean, 2);
+    // }
+    // yStd = std::sqrt(yStd / y.size());
+    // if (yStd == 0) yStd = 1;  // Prevent division by zero
 
-    // Normalize y
-    for (size_t i = 0; i < yNorm.size(); ++i) {
-        yNorm[i] = (yNorm[i] - yMean) / yStd;
-    }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMean) / yStd;
+    // }
 
-    return {xNorm, yNorm};
+    return {xNorm, y};
 }
 
 int main(){
@@ -166,22 +165,26 @@ int main(){
     NN::Sigmoid sgd{};
     NN::Identity idt{};
     NN::Tanh tnh{};
-    nn.addLayer(4,relu);
-    nn.addLayer(4,relu);
-    nn.addLayer(1,idt);
+    nn.addLayer(2,relu);
+    nn.addLayer(2,relu);
+    nn.addLayer(3,sft);
 
     NN::CategoricalCrossEntropy los{};
-    nn.train(xTrainNorm, yTrainNorm, 500, 0.001, los);
+    nn.train(xTrainNorm, yTrainNorm, 2000, 0.001, los);
 
-    // std::cout << "Testing Started.................\n";
+    std::cout << "\n\nTesting Started.................\n";
 
-    // std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
-    // NN::matrix xTest { testData.first };
-    // NN::row yTest { testData.second };
-    // NN::row output{ nn.predict(xTest) };
+    std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//irisTest.csv")};
+    NN::matrix xTest { testData.first };
+    NN::row yTest { testData.second };
 
-    // using namespace NN;
-    // std::cout << output << '\n';
+    std::pair<NN::matrix, NN::row> normalizedDataTest = zScoreNormalize(xTest, yTest);
+    NN::matrix xTestNorm = normalizedDataTest.first;
+    NN::row yTestNorm = normalizedDataTest.second;
+    NN::row output{ nn.predict(xTestNorm) };
+
+    using namespace NN;
+    std::cout << output << '\n';
 
     // double pred = nn.predict(NN::row{7});
     // std::cout << pred << '\n';

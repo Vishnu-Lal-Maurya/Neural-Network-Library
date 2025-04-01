@@ -56,7 +56,9 @@ namespace NN{
                #ifdef DEBUG
                   std::cout << "Loss: " << lossFunction.computeCost(actualOutput, output) << '\n';
                #endif
-               totalLoss += lossFunction.computeCost(actualOutput, output);
+               double currentLoss{ lossFunction.computeCost(actualOutput, output) };
+               assert((currentLoss>0.0) && "Loss can't be negative\n");
+               totalLoss += currentLoss;
 
                // Calculate derivative of the loss function 
                row dLoss = lossFunction.derivative(actualOutput, output);

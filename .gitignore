@@ -11,4 +11,5 @@ rough.txt
 *.out
 *.cph
 
-/src/main.cpp
+src/main.cpp
+stc/main2.cpp

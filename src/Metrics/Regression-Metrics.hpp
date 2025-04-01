@@ -1,7 +1,7 @@
 #ifndef REGRESSIONMETRICS_H
 #define REGRESSIONMETRICS_H
 
-#include <aliases.hpp>
+#include "../aliases.hpp"
 #include <cassert>
 
 namespace NN{

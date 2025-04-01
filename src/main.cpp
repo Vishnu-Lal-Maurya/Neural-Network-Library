@@ -13,6 +13,8 @@
 #include <string>
 #include <sstream>
 #include <random>
+#include "Metrics/Classification-Metrics.hpp"
+#include "Metrics/Regression-Metrics.hpp"
 
 using NN::row;
 using NN::matrix;
@@ -65,10 +67,10 @@ DataPair normalizeData(const matrix& x, const row& y) {
         }
     }
     
-    // Normalize y
-    for (size_t i = 0; i < yNorm.size(); ++i) {
-        yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
-    }
+    // // Normalize y
+    // for (size_t i = 0; i < yNorm.size(); ++i) {
+    //     yNorm[i] = (yNorm[i] - yMin) / (yMax - yMin);
+    // }
     
     return {xNorm, yNorm};
 }
@@ -133,32 +135,19 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
 
 int main(){
 
-    std::pair<NN::matrix, NN::row> data {readFile("D://Neural-Network-Library//Simple-Datasets//iris.csv")};
+    std::pair<NN::matrix, NN::row> data {readFile("/home/vishnu/Desktop/Project/Neural-Network-Library/Simple-Datasets/Iris.csv")};
     NN::matrix xTrain { data.first };
     NN::row yTrain { data.second };
-    std::pair<NN::matrix, NN::row> normalizedData = zScoreNormalize(xTrain, yTrain);
+    std::pair<NN::matrix, NN::row> normalizedData = normalizeData(xTrain, yTrain);
     NN::matrix xTrainNorm = normalizedData.first;
     NN::row yTrainNorm = normalizedData.second;
+    // using namespace NN;
+    // std::cout << "xTrain\n";
+    // std::cout << xTrain << '\n';
 
-    // NN::matrix xTrainNorm = xTrain;
-    // NN::row yTrainNorm = yTrain;
-    // NN::NeuralNetwork neuralNet{1};
-    // NN::Identity idt{};
-    // neuralNet.addLayer(1,idt);
-
-    // NN::MeanSquaredError mse{};
-    // neuralNet.train(xTrain, yTrain, 300, 0.001, mse);
-
-
-    // NN::matrix x{
-    //     {0},
-    //     {1},
-    //     {2},
-    //     {3},
-    //     {4},
-    //     {5}
-    // };
-    // NN::row y{0,1,2,3,4,5}; 
+    // std::cout << "yTrain\n";
+    // std::cout << yTrain << '\n';
+   
 
     NN::NeuralNetwork nn{4};
     NN::ReLU relu{};
@@ -166,29 +155,30 @@ int main(){
     NN::Sigmoid sgd{};
     NN::Identity idt{};
     NN::Tanh tnh{};
-    nn.addLayer(4,relu);
-    nn.addLayer(4,relu);
-    nn.addLayer(1,idt);
+    nn.addLayer(4,sgd);
+    nn.addLayer(3,sft);
+    // nn.addLayer(1,idt);
 
     NN::CategoricalCrossEntropy los{};
-    nn.train(xTrainNorm, yTrainNorm, 500, 0.001, los);
+    nn.train(xTrainNorm, yTrainNorm, 2000, 0.01, los);
+   
 
-    // std::cout << "Testing Started.................\n";
+    data = readFile("/home/vishnu/Desktop/Project/Neural-Network-Library/Simple-Datasets/Iris_test.csv");
+    NN::matrix xTest { data.first };
+    NN::row yTest { data.second };
+    normalizedData = normalizeData(xTest, yTest);
+    NN::matrix xTestNorm = normalizedData.first;
+    NN::row yTestNorm = normalizedData.second;
 
-    // std::pair<NN::matrix, NN::row> testData{readFile("D://Neural-Network-Library//Simple-Datasets//LinearRegTest.csv")};
-    // NN::matrix xTest { testData.first };
-    // NN::row yTest { testData.second };
-    // NN::row output{ nn.predict(xTest) };
+    NN::row yPredict{nn.predict(xTestNorm)};
 
-    // using namespace NN;
-    // std::cout << output << '\n';
+    using namespace NN;
+    std::cout << yTest << '\n';
+    std::cout << yPredict << '\n';
 
-    // double pred = nn.predict(NN::row{7});
-    // std::cout << pred << '\n';
+    NN::ClassificationMetrics clme{yTestNorm,yPredict};
 
-    // double pred1 = nn.predict(NN::row{10});
-    // std::cout << pred1 << '\n';
-
+    std::cout << clme.getAccuracy() << '\n';
     
     return 0;
 }

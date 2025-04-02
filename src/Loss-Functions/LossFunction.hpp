@@ -9,6 +9,7 @@ namespace NN{
    public:
        virtual double computeCost(const row& yActual, const row& yPredicted) const = 0;
        virtual row derivative(const row& yActual, const row& yPredicted) const = 0;
+       virtual ~LossFunction() = default;
    };
 }
 

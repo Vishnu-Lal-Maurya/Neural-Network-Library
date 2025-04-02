@@ -155,8 +155,8 @@ int main(){
     NN::Sigmoid sgd{};
     NN::Identity idt{};
     NN::Tanh tnh{};
-    nn.addLayer(2,relu);
-    nn.addLayer(5,relu);
+    nn.addLayer(2,relu, 0.1);
+    nn.addLayer(5,relu, 0.1);
     nn.addLayer(3,sft);
     // nn.addLayer(1,idt);
 

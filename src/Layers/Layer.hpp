@@ -11,7 +11,7 @@ namespace NN
     {
     public:
 
-        Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction, double dropout=0)
+        Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction, double dropout)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }

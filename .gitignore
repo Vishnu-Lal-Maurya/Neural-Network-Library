@@ -6,7 +6,6 @@ src/main
 src/dump.txt
 rough.txt
 .vscode
-
 *.exe
 *.out
 *.cph

@@ -3,7 +3,7 @@
 
 #include "../aliases.hpp"
 #include "../Activation-Functions/ActivationFunction.hpp"
-#include "../utils/operations.hpp"
+#include "../utils/Operations.hpp"
 
 namespace NN
 {
@@ -27,11 +27,6 @@ namespace NN
         row forwardPropagate(const row& input, bool toDrop = false){
             // store the input for backProp
             m_input = input;
-            // row result(m_inputSize,0); 
-            // for(int i{0}; i<m_outputSize; ++i){
-            //     std::size_t idx { toUZ(i) };
-            //     result[idx] = dot(input, m_weights[idx]) + m_bias[idx];
-            // }
 
             // m_computed =  w@input + rowToCol(b)
             // Store it for use in backProp (Don't remove it)
@@ -43,11 +38,13 @@ namespace NN
             row result = m_activationFunction->activate(m_computed);
 
             m_dropVector.assign(result.size(),0.0);
+            
             for(auto& i: m_dropVector){
                 if(!(toDrop && randInRange(0.0,1.0) <= m_dropout)){
                     i = 1.0;
                 }
             }
+
             #ifdef DEBUG1
             std::cout << "Dropout Vector while Forward Prop\n";
             for(auto i: m_dropVector){
@@ -108,6 +105,7 @@ namespace NN
         row getBiases() const { return m_bias; }
 
     private:
+
         int m_outputSize{};
         int m_inputSize{};
         // w[i][j] denotes weight of the edge connecting ith neuron in the currLayer and the jth neuron in the prevLayer
@@ -116,7 +114,7 @@ namespace NN
         row m_bias{};
         row m_computed{};
         row m_dropVector{};
-        double m_dropout{0.0};
+        double m_dropout{};
 
         std::unique_ptr<ActivationFunction> m_activationFunction;
         // const ActivationFunction& m_activationFunction;

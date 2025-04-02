@@ -49,6 +49,14 @@ namespace NN
                     i = 0;
                 }
             }
+            #ifdef DEBUG1
+            std::cout << "Dropout Vector while Forward Prop\n";
+            for(auto i: m_dropVector){
+                std::cout << i << ' ';
+            }
+            std::cout << std::endl;
+            std::cout << std::endl;
+            #endif
 
             // applying dropout
             result = mul(result, m_dropVector);
@@ -67,6 +75,16 @@ namespace NN
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
             // applying dropout
             dcomputed = mul(dcomputed, m_dropVector);
+
+            #ifdef DEBUG1
+            std::cout << "Dropout Vector while backward Prop\n";
+            for(auto i: m_dropVector){
+                std::cout << i << ' ';
+            }
+            std::cout << std::endl;
+            std::cout << std::endl;
+            #endif
+
             // scaling so that expected value of the output remains same
             dcomputed = mul(dcomputed, 1.0 / (1.0 - m_dropout));
 

@@ -111,7 +111,7 @@ namespace NN{
    }
 
 
-   inline void NeuralNetwork::train(matrix xTrain, row yTrain, int epochs, double learningRate0, const LossFunction& lossFunction, double decayRate = 0.0, int timeInterval = 1){
+   inline void NeuralNetwork::train(matrix xTrain, row yTrain, int epochs, double learningRate0, const LossFunction& lossFunction, double decayRate, int timeInterval){
       assert((xTrain.size() == yTrain.size()) && "x_train and y_train sizes don't match");
       assert(timeInterval > 0 && "timeInterval for learning rate decay should be positive");
       assert(decayRate >= 0.0 && "decayRate should be non negative");

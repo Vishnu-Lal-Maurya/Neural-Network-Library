@@ -11,19 +11,20 @@ namespace NN
     {
     public:
 
-        Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction)
+        Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction, double dropout=0)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
         , m_activationFunction{ activationFunction }
         , m_bias(outputSize,0.0)
         , m_weights{ randMatrix(outputSize, inputSize) }
+        , m_dropout{ dropout }
         {
             // @todo -- 
             // We'll like to do random initialization here for weights in future
 
         }
 
-        row forwardPropagate(const row& input){
+        row forwardPropagate(const row& input, bool toDrop = false){
             // store the input for backProp
             m_input = input;
             // row result(m_inputSize,0); 
@@ -41,6 +42,19 @@ namespace NN
             
             row result = m_activationFunction.activate(m_computed);
 
+            m_dropVector.resize(result.size());
+            for(auto& i: m_dropVector){
+                i = 1.0;
+                if(toDrop && randInRange(0.0,1.0) <= m_dropout){
+                    i = 0;
+                }
+            }
+
+            // applying dropout
+            result = mul(result, m_dropVector);
+            // scaling so that expected value of the output remains same
+            result = mul(result, 1.0 / (1.0 - m_dropout));
+
             #ifdef DEBUG
                 std::cout << "Result of forward prop in layer: ";
                 std::cout << result << '\n';
@@ -51,6 +65,11 @@ namespace NN
         row backwardPropagate(const row& dActivatedCurr, double learningRate){
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
+            // applying dropout
+            dcomputed = mul(dcomputed, m_dropVector);
+            // scaling so that expected value of the output remains same
+            dcomputed = mul(dcomputed, 1.0 / (1.0 - m_dropout));
+
             matrix dweights = NN::matMul(NN::rowToColMatrix(dcomputed),m_input); 
             row dbias = dcomputed;
             
@@ -79,6 +98,8 @@ namespace NN
         row m_input{};
         row m_bias{};
         row m_computed{};
+        row m_dropVector{};
+        double m_dropout{0.0};
 
 
         const ActivationFunction& m_activationFunction;

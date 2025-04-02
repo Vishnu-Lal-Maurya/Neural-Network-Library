@@ -12,4 +12,4 @@ rough.txt
 *.cph
 
 src/main.cpp
-stc/main2.cpp
+src/main2.cpp

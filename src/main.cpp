@@ -135,7 +135,7 @@ std::pair<matrix, row> zScoreNormalize(const matrix& x, const row& y) {
 
 int main(){
 
-    std::pair<NN::matrix, NN::row> data {readFile("/home/vishnu/Desktop/Project/Neural-Network-Library/Simple-Datasets/Iris.csv")};
+    std::pair<NN::matrix, NN::row> data {readFile("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/Simple-Datasets/Iris.csv")};
     NN::matrix xTrain { data.first };
     NN::row yTrain { data.second };
     std::pair<NN::matrix, NN::row> normalizedData = normalizeData(xTrain, yTrain);
@@ -155,7 +155,8 @@ int main(){
     NN::Sigmoid sgd{};
     NN::Identity idt{};
     NN::Tanh tnh{};
-    nn.addLayer(4,sgd);
+    nn.addLayer(2,relu);
+    nn.addLayer(5,relu);
     nn.addLayer(3,sft);
     // nn.addLayer(1,idt);
 
@@ -163,7 +164,7 @@ int main(){
     nn.train(xTrainNorm, yTrainNorm, 2000, 0.01, los);
    
 
-    data = readFile("/home/vishnu/Desktop/Project/Neural-Network-Library/Simple-Datasets/Iris_test.csv");
+    data = readFile("/home/fireheart17/2025/NeutalNetProject/Neural-Network-Library/Simple-Datasets/IrisTest.csv");
     NN::matrix xTest { data.first };
     NN::row yTest { data.second };
     normalizedData = normalizeData(xTest, yTest);

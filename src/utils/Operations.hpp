@@ -116,9 +116,9 @@ namespace NN{
 
     matrix transpose(const matrix& v){
         matrix result{};
-        for(int j{0}; j < v[0].size(); ++j){
+        for(int j{0}; j < static_cast<int>(v[0].size()); ++j){
             row temp{};
-            for(int i{0}; i < v.size(); ++i){
+            for(int i{0}; i < static_cast<int>(v.size()); ++i){
                 temp.push_back(v[toUZ(i)][toUZ(j)]);
             }
             result.push_back(temp);
@@ -132,10 +132,10 @@ namespace NN{
 
         matrix result(m1.size(), row(m2[0].size(),0));
 
-        for(int k{0}; k < m2.size() ; ++k){
+        for(int k{0}; k < static_cast<int>(m2.size()) ; ++k){
             for(int i{0}; i < m1.size(); ++i){
                 double temp{m1[toUZ(i)][toUZ(k)]};
-                for(int j{0}; j < m2[0].size(); ++j){
+                for(int j{0}; j < static_cast<int>(m2[0].size()); ++j){
                     result[toUZ(i)][toUZ(j)] += temp * m2[toUZ(k)][toUZ(j)];
                 }
             }

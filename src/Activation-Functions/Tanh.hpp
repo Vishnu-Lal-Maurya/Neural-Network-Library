@@ -18,7 +18,6 @@ namespace NN {
       };
 
       row derivate(const row& input) const override {
-
          row result(activate(input));
          for(auto &ele : result){
             ele = 1 - ele*ele;

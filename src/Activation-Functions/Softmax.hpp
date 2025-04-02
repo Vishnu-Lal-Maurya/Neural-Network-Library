@@ -12,7 +12,9 @@ namespace NN{
             std::size_t length { input.size() };
             row result{};
             result.reserve(length);
+
             double denominator{};
+            
             for(auto i : input){
                 denominator += exp(i);
             }
@@ -20,6 +22,7 @@ namespace NN{
             for(auto i : input){
                 result.emplace_back(exp(i) / denominator);
             }
+
             return result;
         };
 

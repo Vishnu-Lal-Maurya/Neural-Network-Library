@@ -144,7 +144,9 @@ namespace NN{
         return result;
     }
 
-    row matToRow(const matrix& m1){
+    row rowMatToRow(const matrix& m1){
+        assert(m1.size() and "Matrix is empty");
+        return m1[0];
         if(m1.size()==1) return row{m1[0]};
         assert(m1[0].size() == 1 && "number of columns should be 1");
         row result(m1.size());
@@ -153,6 +155,17 @@ namespace NN{
         }
         return result;
     }
+
+    row colMatToRow(const matrix& m1){
+        assert(m1.size() and "Matrix should not be empty");
+        assert(m1[0].size() == 1 && "number of columns should be 1");
+        row result(m1.size());
+        for(int k{0}; k < static_cast<int>(m1.size()) ; ++k){
+            result[toUZ(k)] = m1[toUZ(k)][0];
+        }
+        return result;
+    }
+
 
     matrix rowToColMatrix(const row& v1){
         matrix result(v1.size(),row(1,0));

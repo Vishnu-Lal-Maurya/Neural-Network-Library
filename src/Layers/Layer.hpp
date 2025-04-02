@@ -30,7 +30,7 @@ namespace NN
 
             // m_computed =  w@input + rowToCol(b)
             // Store it for use in backProp (Don't remove it)
-            m_computed = NN::matToRow(NN::add(NN::matMul(m_weights,NN::rowToColMatrix(input)),NN::rowToColMatrix(m_bias)));
+            m_computed = NN::colMatToRow(NN::add(NN::matMul(m_weights,NN::rowToColMatrix(input)),NN::rowToColMatrix(m_bias)));
 
             // Activate the output
             // m_computed = result;
@@ -44,6 +44,7 @@ namespace NN
                     i = 1.0;
                 }
             }
+
 
             #ifdef DEBUG1
             std::cout << "Dropout Vector while Forward Prop\n";
@@ -88,7 +89,7 @@ namespace NN
             row dbias = dcomputed;
             
             
-            row dActivatedPrev = NN::matToRow(NN::matMul(NN::transpose(m_weights),NN::rowToColMatrix(dcomputed)));
+            row dActivatedPrev = NN::colMatToRow(NN::matMul(NN::transpose(m_weights),NN::rowToColMatrix(dcomputed)));
             m_weights = NN::sub(m_weights, NN::mul(learningRate,dweights));
             m_bias = NN::sub(m_bias, NN::mul(learningRate,dbias));
 

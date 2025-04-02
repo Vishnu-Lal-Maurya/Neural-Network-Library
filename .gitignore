@@ -10,6 +10,5 @@ rough.txt
 *.exe
 *.out
 *.cph
-
 src/main.cpp
-stc/main2.cpp
+src/main2.cpp

@@ -1,7 +1,7 @@
 #ifndef CLASSIFICATIONMETRICS_H
 #define CLASSIFICATIONMETRICS_H
 
-#include "aliases.hpp"
+#include "../aliases.hpp"
 #include <cassert>
 
 namespace NN{
@@ -75,7 +75,10 @@ namespace NN{
             double avgRecall(getAvgRecall(totalClasses));
             return (2 * avgPrecision * avgRecall) / (avgPrecision + avgRecall);
         }
-    
+        
+        
+        
+
     private:
         row m_yActual{}, m_yPredicted{}; 
     };

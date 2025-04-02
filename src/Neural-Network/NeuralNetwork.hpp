@@ -43,7 +43,7 @@ namespace NN{
             double totalLoss{ 0.0 };
             for(int i{0}; i<xTrain.size(); ++i){
 
-               row output { forward(xTrain[i]) };
+               row output { forward(xTrain[i], true) };
 
                row actualOutput(m_layers.back().getOutputSize(),0.0);
                if(isClassification()){
@@ -102,12 +102,12 @@ namespace NN{
          return (m_layers.back().getOutputSize() != 1);
       }
 
-      row forward(row input){
+      row forward(row input, bool toDrop = false){
          #ifdef DEBUG
             std::cout << "Forward Propagation started...\n";
          #endif
          for(auto& layer : m_layers){
-            input = layer.forwardPropagate(input);
+            input = layer.forwardPropagate(input, toDrop);
          }
          #ifdef DEBUG
             std::cout << "Result of forward Propagation:";

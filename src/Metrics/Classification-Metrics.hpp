@@ -5,7 +5,7 @@
 #include <cassert>
 
 namespace NN{
-    double getAccuracy(const row& yPredicted, const row& yActual) {
+    double calculateAccuracy(const row& yPredicted, const row& yActual) {
         assertDimensions(yPredicted, yActual);
         int correctPredictions{0};
         double totalPredictions{static_cast<double>(yActual.size())};
@@ -16,7 +16,7 @@ namespace NN{
         return correctPredictions/totalPredictions;
     }
 
-    double getPrecision(const row& yPredicted, const row& yActual, int trueClass) {
+    double calculatePrecision(const row& yPredicted, const row& yActual, int trueClass) {
         int truePositives{}, falsePositives{};
         for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
             if(yPredicted[toUZ(i)] == trueClass){
@@ -31,16 +31,16 @@ namespace NN{
         return static_cast<double>(truePositives) / (truePositives + falsePositives);
     }
 
-    double getAvgPrecision(const row& yPredicted, const row& yActual, int totalClasses) {
+    double calculateAvgPrecision(const row& yPredicted, const row& yActual, int totalClasses) {
         double result{};
         for(int i{0}; i< totalClasses; ++i){
-            result += getPrecision(yPredicted, yActual, i);
+            result += calculatePrecision(yPredicted, yActual, i);
         }
         return result / totalClasses;
     }
     
 
-    double getRecall(const row& yPredicted, const row& yActual, int trueClass) {
+    double calculateRecall(const row& yPredicted, const row& yActual, int trueClass) {
         int truePositives{}, falseNegatives{};
         for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
             if(yActual[i] == trueClass){
@@ -55,17 +55,17 @@ namespace NN{
         return static_cast<double>(truePositives) / (truePositives + falseNegatives);
     }
 
-    double getAvgRecall(const row& yPredicted, const row& yActual, int totalClasses) {
+    double calculateAvgRecall(const row& yPredicted, const row& yActual, int totalClasses) {
         double result{};
         for(int i{0}; i< totalClasses; ++i){
-            result += getRecall(yPredicted, yActual, i);
+            result += calculateRecall(yPredicted, yActual, i);
         }
         return result / totalClasses;
     }
 
-    double getF1Score(const row& yPredicted, const row& yActual, int totalClasses) {
-        double avgPrecision(getAvgPrecision(yPredicted, yActual, totalClasses));
-        double avgRecall(getAvgRecall(yPredicted, yActual, totalClasses));
+    double calculateF1Score(const row& yPredicted, const row& yActual, int totalClasses) {
+        double avgPrecision{ calculateAvgPrecision(yPredicted, yActual, totalClasses) };
+        double avgRecall{ calculateAvgRecall(yPredicted, yActual, totalClasses) };
         return (2 * avgPrecision * avgRecall) / (avgPrecision + avgRecall);
     }
 };

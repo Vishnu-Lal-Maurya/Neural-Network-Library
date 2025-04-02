@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace NN{
+
     using row = std::vector<double>;
     using matrix = std::vector<std::vector<double>>;
 
@@ -32,6 +33,7 @@ namespace NN{
         if (x < 0) throw std::invalid_argument("Negative value cannot be converted to std::size_t");
         return static_cast<std::size_t>(x);
     }
+    
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "../aliases.hpp"
 #include "../Activation-Functions/ActivationFunction.hpp"
-#include "../utils/Operations.hpp"
+#include "../utils/MathOperations.hpp"
 
 namespace NN
 {

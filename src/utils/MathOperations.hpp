@@ -1,5 +1,5 @@
-#ifndef OPERATIONS_H
-#define OPERATIONS_H
+#ifndef MATHOPERATIONS_H
+#define MATHOPERATIONS_H
 
 #include "../aliases.hpp"
 #include <cassert>

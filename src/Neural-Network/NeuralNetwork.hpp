@@ -3,7 +3,7 @@
 
 #include "../aliases.hpp"
 #include "../utils/RandomOperations.hpp"
-#include "../utils/Operations.hpp"
+#include "../utils/MathOperations.hpp"
 #include "../Layers/Layer.hpp"
 #include "../Activation-Functions/ActivationFunction.hpp"
 #include "../Loss-Functions/LossFunction.hpp"
@@ -31,7 +31,7 @@ namespace NN{
 
       double predict(const row& x);
 
-      void train(matrix xTrain, row yTrain, int epochs, double learningRate0, const LossFunction& lossFunction, double decayRate = 0.0, int timeInterval = 1);
+      void train(matrix xTrain, row yTrain, int epochs, double initialLearningRate, const LossFunction& lossFunction, double decayRate = 0.0, int timeInterval = 1);
 
       void printWeights(){
          std::cout << "Weights: \n";
@@ -111,7 +111,7 @@ namespace NN{
    }
 
 
-   inline void NeuralNetwork::train(matrix xTrain, row yTrain, int epochs, double learningRate0, const LossFunction& lossFunction, double decayRate, int timeInterval){
+   inline void NeuralNetwork::train(matrix xTrain, row yTrain, int epochs, double initialLearningRate, const LossFunction& lossFunction, double decayRate, int timeInterval){
       assert((xTrain.size() == yTrain.size()) && "x_train and y_train sizes don't match");
       assert(timeInterval > 0 && "timeInterval for learning rate decay should be positive");
       assert(decayRate >= 0.0 && "decayRate should be non negative");
@@ -124,7 +124,7 @@ namespace NN{
          #endif
          double totalLoss{ 0.0 };
          // applying learing rate decay
-         double learningRate{learningRate0 / (1.0 + decayRate * ((ep-1) / timeInterval))};
+         double learningRate{initialLearningRate / (1.0 + decayRate * ((ep-1) / timeInterval))};
          #ifdef DEBUGLR
          std::cout << "learning Rate: "<<learningRate << std::endl;
          #endif
@@ -163,7 +163,7 @@ namespace NN{
          #endif
          }
 
-         double avgLoss { totalLoss/(static_cast<double>(yTrain.size())) };
+         double avgLoss { totalLoss / static_cast<double>(yTrain.size()) };
          std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
          
       }

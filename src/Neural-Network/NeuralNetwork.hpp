@@ -20,11 +20,10 @@ namespace NN{
       }
       
       void addLayer(int currNumOfNodes, const NN::ActivationFunction& activationFunction, double dropout = 0.0){
-         int prevNumOfNodes{m_inputDim};
-         if(m_layers.size()){
-            prevNumOfNodes = m_layers.back().getOutputSize();
-         }
+         
+         int prevNumOfNodes = m_layers.size() ? m_layers.back().getOutputSize() : m_inputDim ; 
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction, dropout});
+         
       }  
 
       row predict(const matrix& x);
@@ -69,13 +68,16 @@ namespace NN{
       }
 
       void backward(const row& dLoss, double learningRate){
+
          #ifdef DEBUG
             std::cout << "Backward Propagation started...\n";
          #endif
+         
          row prev{ dLoss };
          for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
             prev = it->backwardPropagate(prev, learningRate);
          }
+
          #ifdef DEBUG
             std::cout << "Weights and biases after backProp:\n";
             for(const auto& layer: m_layers){
@@ -100,13 +102,13 @@ namespace NN{
    }
 
    inline double NeuralNetwork::predict(const row& x){
-      row output { forward(x) };
+      row predictedOutput { forward(x) };
       if(isClassification()){
-         double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
+         double predictedClass{ static_cast<double>(max_element(predictedOutput.begin(), predictedOutput.end()) - predictedOutput.begin())};
          return predictedClass;
       }
       else{
-         return output[0];
+         return predictedOutput[0];
       }
    }
 
@@ -118,22 +120,30 @@ namespace NN{
       
       // Run the epochs -
       for(int ep{1}; ep<=epochs; ++ep){
+
          shuffleData(xTrain, yTrain);
+
          #ifdef DEBUG
             std::cout << "\n\nEpoch: " << ep << "............................\n";
          #endif
-         double totalLoss{ 0.0 };
+         
          // applying learing rate decay
          double learningRate{initialLearningRate / (1.0 + decayRate * ((ep-1) / timeInterval))};
+
          #ifdef DEBUGLR
          std::cout << "learning Rate: "<<learningRate << std::endl;
          #endif
 
-         for(int i{0}; i<xTrain.size(); ++i){
+         double currEpochLoss{ 0.0 };
 
-            row output { forward(xTrain[i], true) };
+         for(int i{0}; i < static_cast<std::size_t>(xTrain.size()); ++i){
+
+            // forward propogating
+            row predictedOutput { forward(xTrain[i], true) };
 
             row actualOutput(m_layers.back().getOutputSize(),0.0);
+
+            // one hot encoding the actual output in case of classification
             if(isClassification()){
                int index{ static_cast<int>(yTrain[toUZ(i)]) };
                actualOutput[toUZ(index)] = 1.0;
@@ -141,29 +151,31 @@ namespace NN{
             else{
                actualOutput[0] = yTrain[toUZ(i)];
             }
+            
+            double currentLoss{ lossFunction.computeCost(actualOutput, predictedOutput) };
+            
             #ifdef DEBUG
-               std::cout << "Loss: " << lossFunction.computeCost(actualOutput, output) << '\n';
+               std::cout << "Loss: " << currentLoss << '\n';
             #endif
-            double currentLoss{ lossFunction.computeCost(actualOutput, output) };
-            assert((currentLoss>0.0) && "Loss can't be negative\n");
-            totalLoss += currentLoss;
+
+            assert((currentLoss >= 0.0) && "Loss can't be negative\n");
+            
+            currEpochLoss += currentLoss;
 
             // Calculate derivative of the loss function 
-            row dLoss = lossFunction.derivative(actualOutput, output);
+            row dLoss = lossFunction.derivative(actualOutput, predictedOutput);
+
             #ifdef DEBUG
                std::cout << "dLoss: " << dLoss << '\n';
             #endif
-            // @todo 
-            // implement backward propagation
+            
+            // backward propogating
             backward(dLoss, learningRate);
 
-         #ifdef DEBUG
-            std::cout << "Result of forward Propagation:";
-            std::cout << "\n\n";
-         #endif
+            
          }
 
-         double avgLoss { totalLoss / static_cast<double>(yTrain.size()) };
+         double avgLoss { currEpochLoss / static_cast<double>(yTrain.size()) };
          std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
          
       }

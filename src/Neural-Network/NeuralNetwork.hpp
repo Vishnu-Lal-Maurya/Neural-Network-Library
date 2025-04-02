@@ -126,7 +126,7 @@ namespace NN{
          }
          #ifdef DEBUG
             std::cout << "Weights and biases after backProp:\n";
-            for(auto layer: m_layers){
+            for(const auto& layer: m_layers){
                std::cout << "Weights:\n";
                std::cout << layer.getWeights() << '\n';
                std::cout << "Biases:\n";
@@ -169,7 +169,6 @@ namespace NN{
 
    inline double NeuralNetwork::predict(const row& x){
       row output { forward(x) };
-      std::cout << output << '\n';
       if(isClassification()){
          double predictedClass{ static_cast<double>(max_element(output.begin(), output.end()) - output.begin())};
          return predictedClass;

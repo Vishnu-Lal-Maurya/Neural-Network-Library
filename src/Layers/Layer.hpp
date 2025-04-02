@@ -14,7 +14,7 @@ namespace NN
         Layer(int inputSize, int outputSize, const ActivationFunction& activationFunction, double dropout)
         : m_inputSize{ inputSize }
         , m_outputSize{ outputSize }
-        , m_activationFunction{ activationFunction }
+        , m_activationFunction{ activationFunction.clone() }
         , m_bias(outputSize,0.0)
         , m_weights{ randMatrix(outputSize, inputSize) }
         , m_dropout{ dropout }
@@ -40,7 +40,7 @@ namespace NN
             // Activate the output
             // m_computed = result;
             
-            row result = m_activationFunction.activate(m_computed);
+            row result = m_activationFunction->activate(m_computed);
 
             m_dropVector.resize(result.size());
             for(auto& i: m_dropVector){
@@ -72,7 +72,7 @@ namespace NN
 
         row backwardPropagate(const row& dActivatedCurr, double learningRate){
 
-            row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
+            row dcomputed = NN::mul(dActivatedCurr,m_activationFunction->derivate(m_computed));
             // applying dropout
             dcomputed = mul(dcomputed, m_dropVector);
 
@@ -119,8 +119,8 @@ namespace NN
         row m_dropVector{};
         double m_dropout{0.0};
 
-
-        const ActivationFunction& m_activationFunction;
+        std::unique_ptr<ActivationFunction> m_activationFunction;
+        // const ActivationFunction& m_activationFunction;
     };
 
 };

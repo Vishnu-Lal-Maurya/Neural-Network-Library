@@ -21,6 +21,10 @@ namespace NN{
             return row{};
         }
 
+        std::unique_ptr<ActivationFunction> clone() const override{
+            return std::make_unique<Argmax>();
+        }
+        
         virtual ~Argmax() = default;
     };
 };

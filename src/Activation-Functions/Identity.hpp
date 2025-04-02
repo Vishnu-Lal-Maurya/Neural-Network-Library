@@ -18,6 +18,10 @@ namespace NN
             return result;
         }
 
+        std::unique_ptr<ActivationFunction> clone() const override{
+            return std::make_unique<Identity>();
+        }
+        
         virtual ~Identity() = default;
     };
 };

@@ -5,35 +5,24 @@
 #include <cassert>
 
 namespace NN{
-    class RegressionMetrics{
-    public:
-        RegressionMetrics(const row& yActual, const row& yPredicted)
-        : m_yActual{yActual}, m_yPredicted{yPredicted}
-        {
-            assert(m_yActual.size() == m_yPredicted.size() && "Mismatch size of yActual and yPredicted");
+    double calculateMeanAbsoluteError(const row& yPredicted, const row& yActual) {
+        assertDimensions(yPredicted, yActual);
+        double result{0.0};
+        for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
+            result += abs(yActual[toUZ(i)]-yPredicted[toUZ(i)]);
         }
+        return result / (yActual.size());
+    }
 
-        double getMAE() const {
-            double result{0.0};
-            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
-                result += abs(m_yActual[i]-m_yPredicted[i]);
-            }
-            return result / (m_yActual.size());
+    double calculateMeanSquaredError(const row& yPredicted, const row& yActual) {
+        assertDimensions(yPredicted, yActual);
+        double result{0.0};
+        for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
+            double difference{yActual[i]-yPredicted[i]};
+            result += difference * difference;
         }
-
-        double getMSE() const {
-            double result{0.0};
-            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
-                double difference{m_yActual[i]-m_yPredicted[i]};
-                result += difference * difference;
-            }
-            return result / (m_yActual.size());
-        }
-
-        
-    private:
-        row m_yActual{}, m_yPredicted{};
-    };
+        return result / (yActual.size());
+    }
 }
 
 

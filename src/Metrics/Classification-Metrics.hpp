@@ -5,83 +5,69 @@
 #include <cassert>
 
 namespace NN{
-    class ClassificationMetrics{
-    public:
-        ClassificationMetrics(const row& yActual, const row& yPredicted)
-        :   m_yActual(yActual), m_yPredicted(yPredicted)
-        {
-            assert(yActual.size() == yPredicted.size() && "Mismatch size of yActual and yPredicted");
-        }
-        
-        double getAccuracy() const {
-            int correctPredictions{0};
-            double totalPredictions{static_cast<double>(m_yActual.size())};
-            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
-                correctPredictions += (m_yActual[i] == m_yPredicted[i]);
-            }
-
-            return correctPredictions/totalPredictions;
+    double getAccuracy(const row& yPredicted, const row& yActual) {
+        assertDimensions(yPredicted, yActual);
+        int correctPredictions{0};
+        double totalPredictions{static_cast<double>(yActual.size())};
+        for(int i{0}; i < static_cast<int>(yActual.size()); ++i){
+            correctPredictions += (yActual[toUZ(i)] == yPredicted[toUZ(i)]);
         }
 
-        double getPrecision(int trueClass) const {
-            int truePositives{}, falsePositives{};
-            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
-                if(m_yPredicted[i] == trueClass){
-                    if(m_yActual[i] == trueClass){
-                        truePositives++;
-                    }
-                    else{
-                        falsePositives++;
-                    }
-                }
-            }
-            return static_cast<double>(truePositives) / (truePositives + falsePositives);
-        }
+        return correctPredictions/totalPredictions;
+    }
 
-        double getAvgPrecision(int totalClasses) const {
-            double result{};
-            for(int i{0}; i< totalClasses; ++i){
-                result += getPrecision(i);
-            }
-            return result / totalClasses;
-        }
-        
-
-        double getRecall(int trueClass) const {
-            int truePositives{}, falseNegatives{};
-            for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
+    double getPrecision(int trueClass) const {
+        int truePositives{}, falsePositives{};
+        for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
+            if(m_yPredicted[i] == trueClass){
                 if(m_yActual[i] == trueClass){
-                    if(m_yPredicted[i] == trueClass){
-                        truePositives++;
-                    }
-                    else{
-                        falseNegatives++;
-                    }
+                    truePositives++;
+                }
+                else{
+                    falsePositives++;
                 }
             }
-            return static_cast<double>(truePositives) / (truePositives + falseNegatives);
         }
+        return static_cast<double>(truePositives) / (truePositives + falsePositives);
+    }
 
-        double getAvgRecall(int totalClasses) const {
-            double result{};
-            for(int i{0}; i< totalClasses; ++i){
-                result += getRecall(i);
+    double getAvgPrecision(int totalClasses) const {
+        double result{};
+        for(int i{0}; i< totalClasses; ++i){
+            result += getPrecision(i);
+        }
+        return result / totalClasses;
+    }
+    
+
+    double getRecall(int trueClass) const {
+        int truePositives{}, falseNegatives{};
+        for(int i{0}; i < static_cast<int>(m_yActual.size()); ++i){
+            if(m_yActual[i] == trueClass){
+                if(m_yPredicted[i] == trueClass){
+                    truePositives++;
+                }
+                else{
+                    falseNegatives++;
+                }
             }
-            return result / totalClasses;
         }
+        return static_cast<double>(truePositives) / (truePositives + falseNegatives);
+    }
 
-        double getF1Score(int totalClasses) const {
-            double avgPrecision(getAvgPrecision(totalClasses));
-            double avgRecall(getAvgRecall(totalClasses));
-            return (2 * avgPrecision * avgRecall) / (avgPrecision + avgRecall);
+    double getAvgRecall(int totalClasses) const {
+        double result{};
+        for(int i{0}; i< totalClasses; ++i){
+            result += getRecall(i);
         }
-        
-        
-        
+        return result / totalClasses;
+    }
 
-    private:
-        row m_yActual{}, m_yPredicted{}; 
-    };
+    double getF1Score(int totalClasses) const {
+        double avgPrecision(getAvgPrecision(totalClasses));
+        double avgRecall(getAvgRecall(totalClasses));
+        return (2 * avgPrecision * avgRecall) / (avgPrecision + avgRecall);
+    }
 };
 
 #endif

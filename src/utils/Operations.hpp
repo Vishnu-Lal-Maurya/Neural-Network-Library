@@ -145,15 +145,8 @@ namespace NN{
     }
 
     row rowMatToRow(const matrix& m1){
-        assert(m1.size() and "Matrix is empty");
+        assert(m1.size()==1 and "Matrix is empty");
         return m1[0];
-        if(m1.size()==1) return row{m1[0]};
-        assert(m1[0].size() == 1 && "number of columns should be 1");
-        row result(m1.size());
-        for(int k{0}; k < static_cast<int>(m1.size()) ; ++k){
-            result[toUZ(k)] = m1[toUZ(k)][0];
-        }
-        return result;
     }
 
     row colMatToRow(const matrix& m1){
@@ -177,10 +170,7 @@ namespace NN{
 
 
     matrix matMul(const matrix& m1, const row& v2){
-        matrix m2(1,row(v2.size(),0));
-        for(int k{0}; k < static_cast<int>(v2.size()) ; ++k){
-            m2[0][toUZ(k)] = v2[toUZ(k)];
-        }
+        matrix m2(1,v2);
         return matMul(m1,m2);
     }
 

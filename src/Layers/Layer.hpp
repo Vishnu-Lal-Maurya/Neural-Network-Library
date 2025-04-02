@@ -58,7 +58,7 @@ namespace NN
             // applying dropout
             result = mul(result, m_dropVector);
             // scaling so that expected value of the output remains same
-            result = mul(result, 1.0 / (1.0 - m_dropout));
+            result = div(result, 1.0 - m_dropout);
 
             #ifdef DEBUG
                 std::cout << "Result of forward prop in layer: ";

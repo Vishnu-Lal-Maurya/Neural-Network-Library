@@ -8,7 +8,7 @@ namespace NN{
     class Sigmoid final: public ActivationFunction{
     public:
         row activate(const row& input) const override{
-            std::cout << "I'm actually called\n";
+            // std::cout << "I'm actually called\n";
             row result { input };
 
             for(auto& ele: result){

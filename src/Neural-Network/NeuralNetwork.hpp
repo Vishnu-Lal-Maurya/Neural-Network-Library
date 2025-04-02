@@ -30,9 +30,10 @@ namespace NN{
 
       double predict(const row& x);
 
-      void train(matrix xTrain, row yTrain, int epochs, double learningRate, const LossFunction& lossFunction){
+      void train(matrix xTrain, row yTrain, int epochs, double learningRate0, const LossFunction& lossFunction, double decayRate = 0.0, int timeInterval = 1){
          assert((xTrain.size() == yTrain.size()) && "x_train and y_train sizes don't match");
-
+         assert(timeInterval > 0 && "timeInterval for learning rate decay should be positive");
+         assert(decayRate >= 0.0 && "decayRate should be non negative");
          
          // Run the epochs -
          for(int ep{1}; ep<=epochs; ++ep){
@@ -41,6 +42,12 @@ namespace NN{
                std::cout << "\n\nEpoch: " << ep << "............................\n";
             #endif
             double totalLoss{ 0.0 };
+            // applying learing rate decay
+            double learningRate{learningRate0 / (1.0 + decayRate * ((ep-1) / timeInterval))};
+            #ifdef DEBUGLR
+            std::cout << "learning Rate: "<<learningRate << std::endl;
+            #endif
+
             for(int i{0}; i<xTrain.size(); ++i){
 
                row output { forward(xTrain[i], true) };

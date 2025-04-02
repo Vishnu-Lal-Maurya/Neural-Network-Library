@@ -42,11 +42,10 @@ namespace NN
             
             row result = m_activationFunction.activate(m_computed);
 
-            m_dropVector.resize(result.size());
+            m_dropVector.assign(result.size(),0.0);
             for(auto& i: m_dropVector){
-                i = 1.0;
-                if(toDrop && randInRange(0.0,1.0) <= m_dropout){
-                    i = 0;
+                if(!(toDrop && randInRange(0.0,1.0) <= m_dropout)){
+                    i = 1.0;
                 }
             }
             #ifdef DEBUG1
@@ -73,8 +72,6 @@ namespace NN
         row backwardPropagate(const row& dActivatedCurr, double learningRate){
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction.derivate(m_computed));
-            // applying dropout
-            dcomputed = mul(dcomputed, m_dropVector);
 
             #ifdef DEBUG1
             std::cout << "Dropout Vector while backward Prop\n";
@@ -84,6 +81,8 @@ namespace NN
             std::cout << std::endl;
             std::cout << std::endl;
             #endif
+            // applying dropout
+            dcomputed = mul(dcomputed, m_dropVector);
 
             // scaling so that expected value of the output remains same
             dcomputed = mul(dcomputed, 1.0 / (1.0 - m_dropout));

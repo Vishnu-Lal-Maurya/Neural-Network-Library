@@ -8,6 +8,11 @@
 #include "../Activation-Functions/ActivationFunction.hpp"
 #include "../Loss-Functions/LossFunction.hpp"
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include "../../nlohmann/json.hpp"
+
 
 namespace NN{
 
@@ -31,6 +36,8 @@ namespace NN{
       double predict(const row& x);
 
       void train(matrix xTrain, row yTrain, int epochs, double initialLearningRate, const LossFunction& lossFunction, double decayRate = 0.0, int timeInterval = 1);
+
+      void saveModel(std::string_view filePath);
 
       void printWeights(){
          std::cout << "Weights: \n";
@@ -74,7 +81,7 @@ namespace NN{
          #endif
          
          row prev{ dLoss };
-         for(auto it{ m_layers.rbegin() }; it!=m_layers.rend(); ++it){
+         for(auto it{ m_layers.rbegin() }; it != m_layers.rend(); ++it){
             prev = it->backwardPropagate(prev, learningRate);
          }
 
@@ -179,6 +186,17 @@ namespace NN{
          std::cout << "Average loss after epoch " << ep << ": " << avgLoss << '\n';
          
       }
+   }
+
+   inline void NeuralNetwork::saveModel(std::string_view filePath){
+      namespace fs = std::filesystem;
+      fs::path jsonFilePath { filePath };
+      if(!(jsonFilePath.extension() == ".json")){
+         throw "Unrecognised file extension";
+      }
+      using json = nlohmann::json;
+      json j;
+      j["numberOfLayers"] = m_layers.size();
    }
 
 

@@ -2,6 +2,7 @@
 #define LAYER_H
 
 #include "../aliases.hpp"
+#include "../Activation-Functions/ActivationFunctionsEnum.hpp"
 #include "../Activation-Functions/ActivationFunction.hpp"
 #include "../utils/MathOperations.hpp"
 
@@ -23,6 +24,20 @@ namespace NN
             // We'll like to do random initialization here for weights in future
 
         }
+
+        Layer(int inputSize, int outputSize, const matrix& weights, const row& bias, int activationFunctionEnum, double dropout)
+        : m_inputSize{ inputSize }
+        , m_outputSize{ outputSize }
+        , m_activationFunction{   getActivationFunctionFromEnum(activationFunctionEnum) }
+        , m_bias{ bias }
+        , m_weights{ weights }
+        , m_dropout{ dropout }
+        {
+            // @todo -- 
+            // We'll like to do random initialization here for weights in future
+
+        }
+
 
         row forwardPropagate(const row& input, bool toDrop = false){
             // store the input for backProp
@@ -46,7 +61,7 @@ namespace NN
             }
 
 
-            #ifdef DEBUG1
+            #ifdef DEBUG_FORWARD
             std::cout << "Dropout Vector while Forward Prop\n";
             for(auto i: m_dropVector){
                 std::cout << i << ' ';
@@ -60,7 +75,7 @@ namespace NN
             // scaling so that expected value of the output remains same
             result = div(result, 1.0 - m_dropout);
 
-            #ifdef DEBUG
+            #ifdef DEBUG_FORWARD
                 std::cout << "Result of forward prop in layer: ";
                 std::cout << result << '\n';
             #endif
@@ -71,7 +86,7 @@ namespace NN
 
             row dcomputed = NN::mul(dActivatedCurr,m_activationFunction->derivate(m_computed));
 
-            #ifdef DEBUG1
+            #ifdef DEBUG_BACKWARD
             std::cout << "Dropout Vector while backward Prop\n";
             for(auto i: m_dropVector){
                 std::cout << i << ' ';

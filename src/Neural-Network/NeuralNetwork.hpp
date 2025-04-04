@@ -11,8 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include "../../nlohmann/json.hpp"
-
+#include <nlohmann/json.hpp>
 
 namespace NN{
 
@@ -30,6 +29,11 @@ namespace NN{
          m_layers.push_back(NN::Layer{prevNumOfNodes,currNumOfNodes,activationFunction, dropout});
          
       }  
+
+      // this will be for loading model
+      void addLayer(int prevNumOfNodes, int currNumOfNodes, const matrix& weights, const row& bias, int activationFunctionEnum, double dropout){
+         m_layers.push_back(NN::Layer{prevNumOfNodes, currNumOfNodes, weights, bias, activationFunctionEnum, dropout});
+      }
 
       row predict(const matrix& x);
 
@@ -194,9 +198,9 @@ namespace NN{
       if(!(jsonFilePath.extension() == ".json")){
          throw "Unrecognised file extension";
       }
-      using json = nlohmann::json;
-      json j;
-      j["numberOfLayers"] = m_layers.size();
+      // using json = nlohmann::json;
+      // json j;
+      // j["numberOfLayers"] = m_layers.size();
    }
 
 

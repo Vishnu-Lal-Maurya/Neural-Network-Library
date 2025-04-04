@@ -194,13 +194,16 @@ namespace NN{
    }
 
    inline void NeuralNetwork::saveModel(std::string_view filePath){
+
       namespace fs = std::filesystem;
       fs::path jsonFilePath { filePath };
 
       if(!(jsonFilePath.extension() == ".json")){
          throw "Unrecognised file extension";
       }
+
       std::ofstream out(jsonFilePath.c_str());
+
       using json = nlohmann::json;
       json j;
       j["numberOfLayers"] = m_layers.size();

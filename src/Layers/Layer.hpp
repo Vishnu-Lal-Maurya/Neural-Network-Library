@@ -33,9 +33,7 @@ namespace NN
         , m_weights{ weights }
         , m_dropout{ dropout }
         {
-            // @todo -- 
-            // We'll like to do random initialization here for weights in future
-
+            // this constructor will be used for constructing the layer when we are loading a pretrained model
         }
 
 

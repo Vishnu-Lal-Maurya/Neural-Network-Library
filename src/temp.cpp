@@ -17,7 +17,7 @@ int main() {
 
     // key `rooms` and create the json array from the vector:
     j["rooms"] = rooms;
-    j["temp"] = 1;
+    j["temp"] = 1; // you can put any datatype as value, Json will automatically handle it as far as I know
 
     std::cout << j << '\n';
 }

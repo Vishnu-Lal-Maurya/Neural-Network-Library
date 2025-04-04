@@ -221,6 +221,7 @@ namespace NN{
       }
       j["Layers"] = layers;
       out << j << std::endl;
+      out.close();
    }
 
 

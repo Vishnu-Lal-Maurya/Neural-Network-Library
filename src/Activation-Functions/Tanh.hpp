@@ -29,6 +29,10 @@ namespace NN {
          return std::make_unique<Tanh>();
       }
 
+      int getEnumIndex() const {
+         return ActivationFunctionsEnum::tanh;
+     }
+
       virtual ~Tanh() = default;
    };
    

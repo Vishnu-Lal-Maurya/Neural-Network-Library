@@ -31,6 +31,10 @@ namespace NN{
             return std::make_unique<Sigmoid>();
         }
 
+        int getEnumIndex() const {
+            return ActivationFunctionsEnum::sigmoid;
+        }
+
         virtual ~Sigmoid() = default;
 
     private:

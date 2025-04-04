@@ -28,6 +28,10 @@ namespace NN
         std::unique_ptr<ActivationFunction> clone() const override{
             return std::make_unique<ReLU>();
         }
+
+        int getEnumIndex() const {
+            return ActivationFunctionsEnum::relu;
+        }
         
         virtual ~ReLU() = default;
     };

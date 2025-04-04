@@ -22,6 +22,10 @@ namespace NN
             return std::make_unique<Identity>();
         }
         
+        int getEnumIndex() const {
+            return ActivationFunctionsEnum::identity;
+        }
+
         virtual ~Identity() = default;
     };
 };

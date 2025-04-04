@@ -37,6 +37,10 @@ namespace NN{
         std::unique_ptr<ActivationFunction> clone() const override{
             return std::make_unique<Softmax>();
         }
+
+        int getEnumIndex() const {
+            return ActivationFunctionsEnum::softmax;
+        }
         
         virtual ~Softmax() = default;
     };

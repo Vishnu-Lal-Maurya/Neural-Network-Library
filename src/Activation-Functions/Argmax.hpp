@@ -1,5 +1,5 @@
-#ifndef SOFTMAX_H
-#define SOFTMAX_H
+#ifndef ARGMAX_H
+#define ARGMAX_H
 
 #include "ActivationFunction.hpp"
 #include <cmath>
@@ -11,7 +11,7 @@ namespace NN{
     public:
         row activate(const row& input) const override {
             row result(input.size(), 0.0);
-            int maxIndex{ max_element(input.begin(), input.end()) - input.begin() };
+            int maxIndex{ static_cast<int>(max_element(input.begin(), input.end()) - input.begin()) };
             result[toUZ(maxIndex)] = 1.0;
             return result;
         };
@@ -23,6 +23,10 @@ namespace NN{
 
         std::unique_ptr<ActivationFunction> clone() const override{
             return std::make_unique<Argmax>();
+        }
+
+        int getEnumIndex() const {
+            return ActivationFunctionsEnum::argmax;
         }
         
         virtual ~Argmax() = default;

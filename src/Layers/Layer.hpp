@@ -105,6 +105,7 @@ namespace NN
 
         row getBiases() const { return m_bias; }
 
+        int getLayerEnumIndex() const { return m_activationFunction->getEnumIndex(); }
     private:
 
         int m_outputSize{};

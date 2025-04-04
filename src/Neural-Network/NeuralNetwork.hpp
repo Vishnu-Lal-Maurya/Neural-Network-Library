@@ -11,8 +11,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include "../../nlohmann/json.hpp"
-
+#include <vector>
+#include <nlohmann/json.hpp>
 
 namespace NN{
 
@@ -191,12 +191,28 @@ namespace NN{
    inline void NeuralNetwork::saveModel(std::string_view filePath){
       namespace fs = std::filesystem;
       fs::path jsonFilePath { filePath };
+
       if(!(jsonFilePath.extension() == ".json")){
          throw "Unrecognised file extension";
       }
+      std::ofstream out(jsonFilePath.c_str());
       using json = nlohmann::json;
       json j;
       j["numberOfLayers"] = m_layers.size();
+      j["inputDim"] = m_inputDim;
+      std::vector<json> layers;
+      for(const auto& i:m_layers){
+         json temp;
+         temp["inputSize"] = i.getInputSize();
+         temp["outputSize"] = i.getOutputSize();
+         temp["dropOut"] = i.getDropOut();
+         temp["weights"] = i.getWeights();
+         temp["bias"] = i.getBiases();
+         temp["activationFunction"] = i.getLayerEnumIndex();
+         layers.push_back(temp);
+      }
+      j["Layers"] = layers;
+      out << j << std::endl;
    }
 
 
